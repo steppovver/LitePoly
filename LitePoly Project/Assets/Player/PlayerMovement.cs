@@ -4,28 +4,52 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;
+    PathFinder pathFinder;
+    RollingDice rollingDice;
 
-    void Start()
+    [SerializeField] private float _delayBetweenSteps;
+    [SerializeField] private float _animDuration;
+
+    private Vector3 playerOffset;
+
+    private void Start()
     {
-        
+        pathFinder = new PathFinder();
+        rollingDice = FindObjectOfType(typeof(RollingDice)) as RollingDice;
+        playerOffset = transform.transform.position - pathFinder.getVectorByIndex(0);
     }
 
-    void Update()
+    public void CalculateNextPosition()
     {
-        float horiznotalDirection = Input.GetAxis("Horizontal");
-        float verticalDirection = Input.GetAxis("Vertical");
-
-        Vector2 direction = new Vector2(verticalDirection, horiznotalDirection);
-
-        Move(direction);
+        int amountSteps = rollingDice.GetRandomValue(2);
+        print(amountSteps);
+        StartCoroutine(MovementCoroutine(amountSteps));
     }
 
-    private void Move(Vector2 direction)
+    private IEnumerator MovementCoroutine(int amountSteps)
     {
-        float scaleMoveSpeed = _moveSpeed * Time.deltaTime;
-
-        Vector3 moveDirection = new Vector3(direction.x, 0, direction.y);
-        transform.position += moveDirection * scaleMoveSpeed;
+        int endOfTurnIndex = pathFinder.CurrentStep + amountSteps;
+        while (pathFinder.CurrentStep != endOfTurnIndex)
+        {
+            Vector3 nextStep = pathFinder.getNextStepPosition();
+            yield return StartCoroutine(MoveToNextStep(nextStep));
+            yield return new WaitForSeconds(_delayBetweenSteps);
+        }
     }
+
+    private IEnumerator MoveToNextStep(Vector3 target)
+    {
+        Vector3 startPosition = transform.position;
+        float t = 0;
+
+        float animDuration = _animDuration;
+
+        while (t < 1)
+        {
+            transform.position = Vector3.Lerp(startPosition, target + playerOffset, t);
+            t += Time.deltaTime / animDuration;
+            yield return null;
+        }
+    }
+
 }
