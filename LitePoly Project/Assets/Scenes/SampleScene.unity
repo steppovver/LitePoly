@@ -969,10 +969,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 494522516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91fd2c4a84922f44299d32527f916359, type: 3}
+  m_Script: {fileID: 11500000, guid: 1daf60b5393a5934dafe65770001b57b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 0
+  PathStep: []
 --- !u!1001 &506303297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2063,7 +2063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ed6d5950198004f8b7c3590a053c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 10
+  _delayBetweenSteps: 0.2
+  _animDuration: 0.5
 --- !u!4 &987895581 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5642459378348439434, guid: f795badc746877f44a6edbff07b6e43d,
