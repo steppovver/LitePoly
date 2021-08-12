@@ -16,12 +16,13 @@ public class PathFinder
 
     public Vector3 getVectorByIndex(int index)
     {
+        index = index % PathStep.Length;
         return PathStep[index].transform.position;
     }
 
     public Vector3 getNextStepPosition()
     {
         CurrentStep++;
-        return PathStep[CurrentStep].transform.position;
+        return PathStep[CurrentStep % PathStep.Length].transform.position;
     }
 }
