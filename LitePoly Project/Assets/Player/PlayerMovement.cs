@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _delayBetweenSteps;
     [SerializeField] private float _animDuration;
 
+    [SerializeField] private int _amountOfDice;
+
     private Vector3 playerOffset;
 
     private void Start()
@@ -21,8 +23,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void CalculateNextPosition()
     {
-        int amountSteps = rollingDice.GetRandomValue(2);
-        print(amountSteps);
+        rollingDice.SetUpDicesAndRoll(_amountOfDice, this);
+    }
+
+    public void StartMoving(int amountSteps)
+    {
         StartCoroutine(MovementCoroutine(amountSteps));
     }
 
