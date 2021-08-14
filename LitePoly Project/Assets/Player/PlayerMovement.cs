@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
             yield return StartCoroutine(MoveToNextStep(nextStep));
             yield return new WaitForSeconds(_delayBetweenSteps);
         }
+        RollADiceButton.Instance.myButton.interactable = true;
     }
 
     private IEnumerator MoveToNextStep(Vector3 target)
