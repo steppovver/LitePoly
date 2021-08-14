@@ -44,18 +44,18 @@ public class RollingDice : MonoBehaviour
 
     void RollTheDice()
     {
-        int i = 0;
+        int diceDistance = 0;
         foreach (var item in dices)
         {
 
-            item.transform.position = transform.position + Vector3.forward * i;
+            item.transform.position = transform.position + Vector3.forward * diceDistance;
             item.transform.rotation = Quaternion.Euler(Random.Range(-180f, 180f), Random.Range(-180f, 180f), Random.Range(-180f, 180f));
             
             Rigidbody rb = item.GetComponent<Rigidbody>();
             Vector3 direction = new Vector3(0,0,0) - item.transform.position;
             rb.AddForce(direction, ForceMode.Impulse);
 
-            i++;
+            diceDistance++;
         }
     }
 
@@ -64,7 +64,7 @@ public class RollingDice : MonoBehaviour
         int countDices = 0;
         yield return new WaitForSeconds(1.0f);
 
-        // wait dor dices to stop
+        // wait for dices to stop
         bool isStop = false;
         while (!isStop)
         {
@@ -72,6 +72,7 @@ public class RollingDice : MonoBehaviour
             yield return null;
         }
         print("stop");
+
 
         foreach (var item in dices)
         {
