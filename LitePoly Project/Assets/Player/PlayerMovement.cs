@@ -5,25 +5,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     PathFinder pathFinder;
-    RollingDice rollingDice;
 
     [SerializeField] private float _delayBetweenSteps;
     [SerializeField] private float _animDuration;
 
-    [SerializeField] private int _amountOfDice;
 
     private Vector3 playerOffset;
 
     private void Start()
     {
         pathFinder = new PathFinder();
-        rollingDice = FindObjectOfType(typeof(RollingDice)) as RollingDice;
         playerOffset = transform.transform.position - pathFinder.getVectorByIndex(0);
-    }
-
-    public void CalculateNextPosition()
-    {
-        rollingDice.SetUpDicesAndRoll(_amountOfDice, this);
     }
 
     public void StartMoving(int amountSteps)

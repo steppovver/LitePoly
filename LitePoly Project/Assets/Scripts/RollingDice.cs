@@ -74,7 +74,6 @@ public class RollingDice : MonoBehaviour
             isStop = IsEveryDiceStopped();
             yield return null;
         }
-        print("stop");
 
 
         foreach (var item in dices)
