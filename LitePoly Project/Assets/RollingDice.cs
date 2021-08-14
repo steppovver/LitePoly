@@ -10,6 +10,8 @@ public class RollingDice : MonoBehaviour
 
     public void SetUpDicesAndRoll(int numberOfDices, PlayerMovement playerObj)
     {
+        StopAllCoroutines();
+
         DiceInit(numberOfDices);
 
         RollTheDice();
@@ -53,6 +55,7 @@ public class RollingDice : MonoBehaviour
             
             Rigidbody rb = item.GetComponent<Rigidbody>();
             Vector3 direction = new Vector3(0,0,0) - item.transform.position;
+            rb.velocity = new Vector3(0, 0, 0);
             rb.AddForce(direction, ForceMode.Impulse);
 
             diceDistance++;

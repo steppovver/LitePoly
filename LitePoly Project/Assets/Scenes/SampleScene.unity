@@ -1930,6 +1930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _delayBetweenSteps: 0.2
   _animDuration: 0.5
+  _amountOfDice: 2
 --- !u!4 &987895581 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5642459378348439434, guid: f795badc746877f44a6edbff07b6e43d,
@@ -2809,7 +2810,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1554005391}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.24, z: 0}
+  m_LocalPosition: {x: 6.08, y: 5, z: 6.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
