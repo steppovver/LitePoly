@@ -9,6 +9,7 @@ public class InitPath : MonoBehaviour
 
     public static InitPath Instance { get { return _instance; } }
 
+    public Step[] PathStep;
 
     private void Awake()
     {
@@ -20,13 +21,7 @@ public class InitPath : MonoBehaviour
         {
             _instance = this;
         }
-    }
 
-    public Step[] PathStep;
-
-    // Start is called before the first frame update
-    void Start()
-    {
         PathStep = GetComponentsInChildren<Step>();
     }
 }

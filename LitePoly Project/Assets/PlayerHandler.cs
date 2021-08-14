@@ -20,13 +20,19 @@ public class PlayerHandler : MonoBehaviour
         {
             _instance = this;
         }
+
+        PlayersInit();
     }
 
 
     RollingDice rollingDice;
 
     [SerializeField] private int _amountOfDice;
+    [SerializeField] private int _numberOfPlayers;
 
+    private int numberOfMoves = 0;
+
+    [SerializeField] private List<GameObject> playersPrefabs;
     public PlayerMovement[] Players;
 
     // Start is called before the first frame update
@@ -34,11 +40,19 @@ public class PlayerHandler : MonoBehaviour
     {
         Players = GetComponentsInChildren<PlayerMovement>();
         rollingDice = FindObjectOfType(typeof(RollingDice)) as RollingDice;
+    }
 
+    void PlayersInit()
+    {
+        for (int i = 0; i < _numberOfPlayers; i++)
+        {
+            Instantiate(playersPrefabs[i], transform);
+        }
     }
 
     public void NewPLayerTurn()
     {
-        rollingDice.SetUpDicesAndRoll(_amountOfDice, Players[0]);
+        numberOfMoves++;
+        rollingDice.SetUpDicesAndRoll(_amountOfDice, Players[numberOfMoves % _numberOfPlayers]);
     }
 }

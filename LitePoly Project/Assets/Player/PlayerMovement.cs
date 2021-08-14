@@ -9,17 +9,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _delayBetweenSteps;
     [SerializeField] private float _animDuration;
 
-
-    private Vector3 playerOffset;
+    [SerializeField] private Vector3 playerOffset;
+    [SerializeField] private Vector3 playerOffset2;
 
     private void Start()
     {
         pathFinder = new PathFinder();
-        playerOffset = transform.transform.position - pathFinder.getVectorByIndex(0);
+        transform.transform.position = playerOffset2 + playerOffset + pathFinder.getVectorByIndex(0);
     }
 
     public void StartMoving(int amountSteps)
     {
+        StopAllCoroutines();
         StartCoroutine(MovementCoroutine(amountSteps));
     }
 
