@@ -13,22 +13,22 @@ public class Dice : MonoBehaviour
 
     public bool IsMoving()
     {
-        return rb.velocity.magnitude > 0.05f;
+        return rb.velocity.magnitude > 0.01f;
     }
 
 	public int GetDiceCount()
 	{
-		if (Vector3.Dot(transform.forward, Vector3.up) > 0.6f)
+		if (Vector3.Dot(transform.forward, Vector3.up) > 0.8f)
 			return 1;
-		if (Vector3.Dot(-transform.forward, Vector3.up) > 0.6f)
+		if (Vector3.Dot(-transform.forward, Vector3.up) > 0.8f)
 			return 6;
-		if (Vector3.Dot(transform.up, Vector3.up) > 0.6f)
+		if (Vector3.Dot(transform.up, Vector3.up) > 0.8f)
 			return 5;
-		if (Vector3.Dot(-transform.up, Vector3.up) > 0.6f)
+		if (Vector3.Dot(-transform.up, Vector3.up) > 0.8f)
 			return 2;
-		if (Vector3.Dot(transform.right, Vector3.up) > 0.6f)
+		if (Vector3.Dot(transform.right, Vector3.up) > 0.8f)
 			return 4;
-		if (Vector3.Dot(-transform.right, Vector3.up) > 0.6f)
+		if (Vector3.Dot(-transform.right, Vector3.up) > 0.8f)
 			return 3;
 		return -1;
 	}
