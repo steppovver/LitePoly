@@ -1,12 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class RollingDice : MonoBehaviour
 {
+    // SINGLETON
+    private static RollingDice _instance;
+
+    public static RollingDice Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
+
     [SerializeField] private GameObject dicePrefab;
 
     List<GameObject> dices = new List<GameObject>();
+
+    public UnityEvent OnDicePair;
+
+    private void Start()
+    {
+        if (OnDicePair == null)
+            OnDicePair = new UnityEvent();
+    }
 
     public void SetUpDicesAndRoll(int numberOfDices, PlayerMovement playerObj)
     {
@@ -64,7 +92,6 @@ public class RollingDice : MonoBehaviour
 
     IEnumerator getDicesCount(PlayerMovement playerObj)
     {
-        int countDices = 0;
         yield return new WaitForSeconds(1.0f);
 
         // wait for dices to stop
@@ -75,14 +102,7 @@ public class RollingDice : MonoBehaviour
             yield return null;
         }
 
-
-        foreach (var item in dices)
-        {
-            countDices += item.GetComponent<Dice>().GetDiceCount();
-        }
-        print(countDices);
-
-        playerObj.StartMoving(countDices);
+        playerObj.StartMoving(CalcualteSumOfDices());
     }
 
     bool IsEveryDiceStopped()
@@ -92,5 +112,23 @@ public class RollingDice : MonoBehaviour
             if (item.GetComponent<Dice>().IsMoving()) return false;
         }
         return true;
+    }
+
+    int CalcualteSumOfDices()
+    {
+        int countDices = 0;
+        foreach (var item in dices)
+        {
+            int currentDiceNumber = item.GetComponent<Dice>().GetDiceCount();
+            if (dices.Count == 2 && currentDiceNumber == countDices)
+            {
+                print("Выпала пара");
+                OnDicePair.Invoke();
+            }
+            countDices += currentDiceNumber;
+        }
+        print(countDices);
+
+        return countDices;
     }
 }

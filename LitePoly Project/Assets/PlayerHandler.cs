@@ -39,7 +39,9 @@ public class PlayerHandler : MonoBehaviour
     void Start()
     {
         Players = GetComponentsInChildren<PlayerMovement>();
-        rollingDice = FindObjectOfType(typeof(RollingDice)) as RollingDice;
+        rollingDice = RollingDice.Instance;
+
+        rollingDice.OnDicePair.AddListener(OneMoreAttempt);
     }
 
     void PlayersInit()
@@ -54,5 +56,11 @@ public class PlayerHandler : MonoBehaviour
     {
         numberOfMoves++;
         rollingDice.SetUpDicesAndRoll(_amountOfDice, Players[numberOfMoves % _numberOfPlayers]);
+    }
+
+    void OneMoreAttempt()
+    {
+        print("’оди еще раз");
+        numberOfMoves--;
     }
 }
