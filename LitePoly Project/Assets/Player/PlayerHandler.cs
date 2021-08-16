@@ -25,7 +25,7 @@ public class PlayerHandler : MonoBehaviour
     }
 
 
-    RollingDice rollingDice;
+    DiceRoller rollingDice;
 
     [SerializeField] private int _amountOfDice;
     [SerializeField] private int _numberOfPlayers;
@@ -39,7 +39,7 @@ public class PlayerHandler : MonoBehaviour
     void Start()
     {
         Players = GetComponentsInChildren<PlayerMovement>();
-        rollingDice = RollingDice.Instance;
+        rollingDice = DiceRoller.Instance;
 
         rollingDice.OnDicePair.AddListener(OneMoreAttempt);
     }

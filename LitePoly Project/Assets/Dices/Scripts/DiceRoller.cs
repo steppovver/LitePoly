@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public class RollingDice : MonoBehaviour
+public class DiceRoller : MonoBehaviour
 {
     // SINGLETON
-    private static RollingDice _instance;
+    private static DiceRoller _instance;
 
-    public static RollingDice Instance { get { return _instance; } }
+    public static DiceRoller Instance { get { return _instance; } }
 
     private void Awake()
     {

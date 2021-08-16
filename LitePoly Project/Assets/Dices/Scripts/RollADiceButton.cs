@@ -23,7 +23,7 @@ public class RollADiceButton : MonoBehaviour
     }
 
 
-    public Button myButton;
+    [HideInInspector] public Button myButton;
 
     void Start()
     {
