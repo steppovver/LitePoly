@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class PauseScript : MonoBehaviour
 {
-    // SINGLETON
+    /// <summary>
+    /// SINGLETON Start
+    /// </summary>
     private static PauseScript _instance;
 
     public static PauseScript Instance { get { return _instance; } }
@@ -22,13 +24,21 @@ public class PauseScript : MonoBehaviour
             _instance = this;
         }
     }
+    /// <summary>
+    /// SINGLETON END
+    /// </summary>
+    /// 
 
     public static bool GameIsPaused = false;
+
     private GameObject _PauseMenu;
+
+    private PauseButton _pauseButton;
     
     private void Start()
     {
         _PauseMenu = transform.GetChild(0).gameObject;
+        _pauseButton = GetComponentInChildren<PauseButton>();
     }
 
     private void Update()
@@ -49,6 +59,7 @@ public class PauseScript : MonoBehaviour
     public void Resume()
     {
         _PauseMenu.gameObject.SetActive(false);
+        _pauseButton.gameObject.SetActive(true);
         GameIsPaused = false;
     }
 
@@ -63,7 +74,7 @@ public class PauseScript : MonoBehaviour
         Application.Quit();
     }
 
-    void SetPause()
+    public void SetPause()
     {
         _PauseMenu.gameObject.SetActive(true);
         GameIsPaused = true;
