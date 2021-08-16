@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         pathFinder = new PathFinder();
-        transform.transform.position = playerOffset2 + playerOffset + pathFinder.getVectorByIndex(0);
+        transform.position = playerOffset2 + playerOffset + pathFinder.getVectorByIndex(0);
     }
 
     public void StartMoving(int amountSteps)

@@ -5,14 +5,6 @@ public class FPSDisplay : MonoBehaviour
 {
 	float deltaTime = 0.0f;
 
-	[SerializeField] private int targetFrameRate = 60;
-
-	private void Awake()
-    {
-		QualitySettings.vSyncCount = 0;
-		Application.targetFrameRate = targetFrameRate;
-	}
-
     void Update()
 	{
 		deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;

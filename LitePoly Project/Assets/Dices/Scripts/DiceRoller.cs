@@ -55,14 +55,16 @@ public class DiceRoller : MonoBehaviour
         {
             if (dices.Count < numberOfDices)
             {
-                dices.Add(Instantiate(
-                    dicePrefab,
-                    new Vector3(
-                        transform.position.x + dices.Count,
-                        transform.position.y,
-                        transform.position.z),
-                    Quaternion.identity,
-                    transform));
+                GameObject newDice = Instantiate(
+                                                dicePrefab,
+                                                new Vector3(
+                                                    transform.position.x + dices.Count,
+                                                    transform.position.y,
+                                                    transform.position.z),
+                                                Quaternion.identity,
+                                                transform
+                                                );
+                dices.Add(newDice);
             }
             else if (dices.Count > numberOfDices)
             {
@@ -85,6 +87,8 @@ public class DiceRoller : MonoBehaviour
             Vector3 direction = new Vector3(0,0,0) - item.transform.position;
             rb.velocity = new Vector3(0, 0, 0);
             rb.AddForce(direction, ForceMode.Impulse);
+
+            //Time.timeScale = 2f;
 
             diceDistance++;
         }
@@ -111,6 +115,7 @@ public class DiceRoller : MonoBehaviour
         {
             if (item.GetComponent<Dice>().IsMoving()) return false;
         }
+        //Time.timeScale = 1f;
         return true;
     }
 
