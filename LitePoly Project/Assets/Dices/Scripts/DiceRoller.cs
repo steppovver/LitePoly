@@ -55,7 +55,8 @@ public class DiceRoller : MonoBehaviour
         {
             if (dices.Count < numberOfDices)
             {
-                GameObject newDice = Instantiate(
+                GameObject newDice = Instantiate
+                    (
                                                 dicePrefab,
                                                 new Vector3(
                                                     transform.position.x + dices.Count,
@@ -88,7 +89,7 @@ public class DiceRoller : MonoBehaviour
             rb.velocity = new Vector3(0, 0, 0);
             rb.AddForce(direction, ForceMode.Impulse);
 
-            //Time.timeScale = 2f;
+            Time.timeScale = 2f;
 
             diceDistance++;
         }
@@ -115,7 +116,7 @@ public class DiceRoller : MonoBehaviour
         {
             if (item.GetComponent<Dice>().IsMoving()) return false;
         }
-        //Time.timeScale = 1f;
+        Time.timeScale = 1f;
         return true;
     }
 
