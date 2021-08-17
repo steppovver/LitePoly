@@ -87,7 +87,7 @@ public class DiceRoller : MonoBehaviour
             Rigidbody rb = item.GetComponent<Rigidbody>();
             Vector3 direction = new Vector3(0,0,0) - item.transform.position;
             rb.velocity = new Vector3(0, 0, 0);
-            rb.AddForce(direction, ForceMode.Impulse);
+            rb.AddForce(direction * 2, ForceMode.Impulse);
 
             Time.timeScale = 2f;
 

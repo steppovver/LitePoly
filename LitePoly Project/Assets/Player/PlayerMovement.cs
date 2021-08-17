@@ -61,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Func<float, float> f = x => -4 * height * x * x + 4 * height * x;
 
-        Debug.Log(f(t));
         var mid = Vector3.Lerp(start, end, t);
 
         return new Vector3(mid.x, f(t) + Mathf.Lerp(start.y, end.y, t), mid.z);
