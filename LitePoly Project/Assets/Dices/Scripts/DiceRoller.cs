@@ -82,7 +82,7 @@ public class DiceRoller : MonoBehaviour
         {
 
             item.transform.position = transform.position + Vector3.forward * diceDistance;
-            item.transform.rotation = Quaternion.Euler(Random.Range(-180f, 180f), Random.Range(-180f, 180f), Random.Range(-180f, 180f));
+            item.transform.rotation = Quaternion.Euler(Random.Range(-2, 3) * 90, Random.Range(-2, 3) * 90, Random.Range(-2, 3) * 90);
             
             Rigidbody rb = item.GetComponent<Rigidbody>();
             Vector3 direction = new Vector3(0,0,0) - item.transform.position;

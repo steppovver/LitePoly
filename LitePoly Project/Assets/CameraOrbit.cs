@@ -25,8 +25,6 @@ public class CameraOrbit : MonoBehaviour
         {
             velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
             velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;
-            print(velocityX);
-            print(velocityY);
         }
         rotationYAxis += velocityX;
         rotationXAxis -= velocityY;
