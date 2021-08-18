@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Step : MonoBehaviour
 {
-    private void Awake()
+    public List<PlayerMovement> playerMovementList;
+
+    public void MoveOverPlayersForAnotherPlayer(int whichWayToTurn)
     {
-        
+        StartCoroutine(playerMovementList[0].MoveOverForAnotherPlayer(whichWayToTurn));
     }
 }

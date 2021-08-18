@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector3 playerOffset;
     [SerializeField] private Vector3 playerOffset2;
 
+    public bool isAlone = false;
+
     private void Start()
     {
         pathFinder = new PathFinder();
@@ -30,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
         int endOfTurnIndex = pathFinder.CurrentStep + amountSteps;
         while (pathFinder.CurrentStep != endOfTurnIndex)
         {
-            Vector3 nextStep = pathFinder.getNextStepPosition();
+            Vector3 nextStep = pathFinder.getNextStepPosition(this);
             yield return StartCoroutine(MoveToNextStep(nextStep));
             yield return new WaitForSeconds(_delayBetweenSteps);
         }
@@ -41,20 +43,25 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 startPosition = transform.position;
 
-        float t = 0;
+        if (!isAlone)
+        {
+            target += playerOffset2;
+        }
+        target += playerOffset;
 
+        float t = 0;
         float animDuration = _animDuration;
 
         while (t < 1)
         {
-            Vector3 parabolicPos = Parabola(startPosition, target + playerOffset, 1, t);
+            Vector3 parabolicPos = Parabola(startPosition, target, 1, t);
 
             transform.position = parabolicPos;
 
             t += Time.deltaTime / animDuration;
             yield return null;
         }
-        transform.position = target + playerOffset;
+        transform.position = target;
     }
 
     private Vector3 Parabola(Vector3 start, Vector3 end, float height, float t)
@@ -64,6 +71,27 @@ public class PlayerMovement : MonoBehaviour
         var mid = Vector3.Lerp(start, end, t);
 
         return new Vector3(mid.x, f(t) + Mathf.Lerp(start.y, end.y, t), mid.z);
+    }
+
+    public IEnumerator MoveOverForAnotherPlayer(int whichWayToTurn)
+    {
+        Vector3 startPosition = transform.position;
+
+        Vector3 target = transform.position + playerOffset2 * whichWayToTurn;
+
+        float t = 0;
+        float animDuration = _animDuration / 2;
+
+        while (t < 1)
+        {
+            Vector3 middlePos = Vector3.Lerp(startPosition, target, t);
+
+            transform.position = middlePos;
+
+            t += Time.deltaTime / animDuration;
+            yield return null;
+        }
+        transform.position = target;
     }
 
 }
