@@ -82,12 +82,15 @@ public class DiceRoller : MonoBehaviour
         {
 
             item.transform.position = transform.position + Vector3.forward * diceDistance;
-            item.transform.rotation = Quaternion.Euler(Random.Range(-2, 3) * 90, Random.Range(-2, 3) * 90, Random.Range(-2, 3) * 90);
+            //item.transform.rotation = Quaternion.Euler(Random.Range(-2, 3) * 90, Random.Range(-2, 3) * 90, Random.Range(-2, 3) * 90);
+            item.transform.rotation = Quaternion.Euler(Random.Range(-180f, 180f), Random.Range(-180f, 180f), Random.Range(-180f, 180f));
             
             Rigidbody rb = item.GetComponent<Rigidbody>();
             Vector3 direction = new Vector3(0,0,0) - item.transform.position;
+
             rb.velocity = new Vector3(0, 0, 0);
             rb.AddForce(direction * 2, ForceMode.Impulse);
+            rb.AddTorque(Vector3.up * 10, ForceMode.Impulse);
 
             Time.timeScale = 2f;
 
