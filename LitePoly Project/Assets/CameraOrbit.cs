@@ -19,12 +19,32 @@ public class CameraOrbit : MonoBehaviour
     float velocityX = 0.0f;
     float velocityY = 0.0f;
 
+    Vector3 position;
+
+    private void Start()
+    {
+        rotationXAxis = transform.rotation.eulerAngles.x;
+        rotationYAxis = transform.rotation.eulerAngles.y;
+
+        Target.position = Vector3.zero;
+        Target.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+    }
+
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        OneTouchInput();
+
+        TwoTouchInput();
+
+        Target.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+    }
+
+    void OneTouchInput()
+    {
+        if (Input.touchCount == 1)
         {
-            velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
-            velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;
+            velocityX += xSpeed * Input.GetTouch(0).deltaPosition.x * 0.02f;
+            velocityY += ySpeed * Input.GetTouch(0).deltaPosition.y * 0.02f / 10;
         }
         rotationYAxis += velocityX;
         rotationXAxis -= velocityY;
@@ -33,12 +53,44 @@ public class CameraOrbit : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(rotationXAxis, rotationYAxis, 0);
 
         Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-        Vector3 position = rotation * negDistance + Target.position;
+        position = rotation * negDistance + Target.position;
 
         transform.rotation = rotation;
         transform.position = position;
         velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
         velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
+    }
+
+    void TwoTouchInput()
+    {
+        if (Input.touchCount == 2 && Input.GetTouch(0).phase == TouchPhase.Moved && Input.GetTouch(1).phase == TouchPhase.Moved)
+        {
+            float varianceInDistances = 100;
+            float minPinchSpeed = 100;
+
+
+            Vector3 curDist = Input.GetTouch(0).position - Input.GetTouch(1).position; //current distance between finger touches
+            Vector3 prevDist = ((Input.GetTouch(0).position - Input.GetTouch(0).deltaPosition) - (Input.GetTouch(1).position - Input.GetTouch(1).deltaPosition)); //difference in previous locations using delta position
+            float touchDelta = curDist.magnitude - prevDist.magnitude;
+
+            float speedTouch0 = Input.GetTouch(0).deltaPosition.magnitude / Input.GetTouch(0).deltaTime;
+            float speedTouch1 = Input.GetTouch(1).deltaPosition.magnitude / Input.GetTouch(1).deltaTime;
+
+            if ((touchDelta + varianceInDistances <= 1) && (speedTouch0 > minPinchSpeed) && (speedTouch1 > minPinchSpeed))
+            {
+                distance = Mathf.Clamp(distance - touchDelta * Time.deltaTime, 5f, 20f);
+            }
+
+            if ((touchDelta + varianceInDistances > 1) && (speedTouch0 > minPinchSpeed) && (speedTouch1 > minPinchSpeed))
+            {
+                distance = Mathf.Clamp(distance - touchDelta * Time.deltaTime, 5f, 20f);
+            }
+
+            if (Input.GetTouch(0).deltaPosition.magnitude - varianceInDistances > 1)
+            {
+                // Target.Translate(Vector3.forward * Time.deltaTime);
+            }
+        }
     }
 
     public static float ClampAngle(float angle, float min, float max)
