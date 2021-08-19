@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,9 +33,16 @@ public class CameraOrbit : MonoBehaviour
 
     void Update()
     {
-        OneTouchInput();
 
-        TwoTouchInput();
+            OneTouchInput();
+            TwoTouchInput();
+
+        if (Application.platform != RuntimePlatform.Android)
+        {
+            DragMouseOrbit();
+
+        }
+
 
         Target.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
@@ -46,19 +54,8 @@ public class CameraOrbit : MonoBehaviour
             velocityX += xSpeed * Input.GetTouch(0).deltaPosition.x * 0.02f;
             velocityY += ySpeed * Input.GetTouch(0).deltaPosition.y * 0.02f / 10;
         }
-        rotationYAxis += velocityX;
-        rotationXAxis -= velocityY;
-        rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
 
-        Quaternion rotation = Quaternion.Euler(rotationXAxis, rotationYAxis, 0);
-
-        Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-        position = rotation * negDistance + Target.position;
-
-        transform.rotation = rotation;
-        transform.position = position;
-        velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
-        velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
+        CalculateRotation();
     }
 
     void TwoTouchInput()
@@ -93,6 +90,17 @@ public class CameraOrbit : MonoBehaviour
         }
     }
 
+    void DragMouseOrbit()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
+            velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;
+        }
+
+        CalculateRotation();
+    }
+
     public static float ClampAngle(float angle, float min, float max)
     {
         if (angle < -360F)
@@ -100,5 +108,22 @@ public class CameraOrbit : MonoBehaviour
         if (angle > 360F)
             angle -= 360F;
         return Mathf.Clamp(angle, min, max);
+    }
+
+    private void CalculateRotation()
+    {
+        rotationYAxis += velocityX;
+        rotationXAxis -= velocityY;
+        rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
+
+        Quaternion rotation = Quaternion.Euler(rotationXAxis, rotationYAxis, 0);
+
+        Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
+        position = rotation * negDistance + Target.position;
+
+        transform.rotation = rotation;
+        transform.position = position;
+        velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
+        velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
     }
 }
