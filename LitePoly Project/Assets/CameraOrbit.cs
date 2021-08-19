@@ -10,6 +10,7 @@ public class CameraOrbit : MonoBehaviour
     public float distance = 20.0f;
     public float xSpeed = 20.0f;
     public float ySpeed = 20.0f;
+    public float zoomSpeed = 1.0f;
     public float yMinLimit = -90f;
     public float yMaxLimit = 90f;
     public float distanceMin = 10f;
@@ -19,6 +20,7 @@ public class CameraOrbit : MonoBehaviour
     float rotationXAxis = 0.0f;
     float velocityX = 0.0f;
     float velocityY = 0.0f;
+    float velocityZoom = 0.0f;
 
     Vector3 position;
 
@@ -62,31 +64,15 @@ public class CameraOrbit : MonoBehaviour
     {
         if (Input.touchCount == 2 && Input.GetTouch(0).phase == TouchPhase.Moved && Input.GetTouch(1).phase == TouchPhase.Moved)
         {
-            float varianceInDistances = 100;
-            float minPinchSpeed = 100;
-
-
             Vector3 curDist = Input.GetTouch(0).position - Input.GetTouch(1).position; //current distance between finger touches
             Vector3 prevDist = ((Input.GetTouch(0).position - Input.GetTouch(0).deltaPosition) - (Input.GetTouch(1).position - Input.GetTouch(1).deltaPosition)); //difference in previous locations using delta position
             float touchDelta = curDist.magnitude - prevDist.magnitude;
+            velocityZoom += zoomSpeed * touchDelta * 0.005f;
 
-            float speedTouch0 = Input.GetTouch(0).deltaPosition.magnitude / Input.GetTouch(0).deltaTime;
-            float speedTouch1 = Input.GetTouch(1).deltaPosition.magnitude / Input.GetTouch(1).deltaTime;
+            distance = Mathf.Clamp(distance - velocityZoom * Time.deltaTime, 5f, 20f);
+            distance = Mathf.Clamp(distance - velocityZoom * Time.deltaTime, 5f, 20f);
 
-            if ((touchDelta + varianceInDistances <= 1) && (speedTouch0 > minPinchSpeed) && (speedTouch1 > minPinchSpeed))
-            {
-                distance = Mathf.Clamp(distance - touchDelta * Time.deltaTime, 5f, 20f);
-            }
-
-            if ((touchDelta + varianceInDistances > 1) && (speedTouch0 > minPinchSpeed) && (speedTouch1 > minPinchSpeed))
-            {
-                distance = Mathf.Clamp(distance - touchDelta * Time.deltaTime, 5f, 20f);
-            }
-
-            if (Input.GetTouch(0).deltaPosition.magnitude - varianceInDistances > 1)
-            {
-                // Target.Translate(Vector3.forward * Time.deltaTime);
-            }
+            velocityZoom = Mathf.Lerp(velocityZoom, 0, Time.deltaTime * smoothTime);
         }
     }
 
