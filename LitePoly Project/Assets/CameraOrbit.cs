@@ -12,10 +12,11 @@ public class CameraOrbit : MonoBehaviour
     public float xSpeed = 20.0f;
     public float ySpeed = 20.0f;
     public float zoomSpeed = 1.0f;
+    public float mouseZoomSpeed = 1.0f;
     public float yMinLimit = -90f;
     public float yMaxLimit = 90f;
-    public float distanceMin = 10f;
-    public float distanceMax = 10f;
+    public float distanceMin = 5f;
+    public float distanceMax = 20f;
     public float smoothTime = 2f;
     float rotationYAxis = 0.0f;
     float rotationXAxis = 0.0f;
@@ -46,6 +47,13 @@ public class CameraOrbit : MonoBehaviour
         TwoTouchInput();
         OneTouchInput();
 
+        if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            DragMouseOrbit();
+            DragMouseToMove();
+            ScrollWheelToZoom();
+        }
+
         Target.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 
@@ -64,15 +72,7 @@ public class CameraOrbit : MonoBehaviour
             velocityYMove += Input.GetTouch(0).deltaPosition.y * 0.001f;
         }
 
-        Target.Translate(-velocityXMove, 0, -velocityYMove, Space.Self);
-
-        float newXPos = Mathf.Clamp(Target.position.x, Flor.position.x - _sizeOfField.x/2, Flor.position.x + _sizeOfField.x/2);
-        float newZPos = Mathf.Clamp(Target.position.z, Flor.position.z - _sizeOfField.z/2, Flor.position.z + _sizeOfField.z/2);
-
-        Target.position = new Vector3(newXPos, Target.position.y, newZPos);
-
-        velocityXMove = Mathf.Lerp(velocityXMove, 0, Time.deltaTime * smoothTime);
-        velocityYMove = Mathf.Lerp(velocityYMove, 0, Time.deltaTime * smoothTime);
+        MoveTarget();
     }
 
     void TwoTouchInput()
@@ -99,11 +99,7 @@ public class CameraOrbit : MonoBehaviour
 
         CalculateRotation();
 
-        distance = Mathf.Clamp(distance - velocityZoom * Time.deltaTime, 5f, 20f);
-        distance = Mathf.Clamp(distance - velocityZoom * Time.deltaTime, 5f, 20f);
-
-
-        velocityZoom = Mathf.Lerp(velocityZoom, 0, Time.deltaTime * smoothTime);
+        ChangeDistance();
     }
 
     void DragMouseOrbit()
@@ -115,6 +111,22 @@ public class CameraOrbit : MonoBehaviour
         }
 
         CalculateRotation();
+    }
+
+    void DragMouseToMove()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            velocityXMove += Input.GetAxis("Mouse X") * 0.02f;
+            velocityYMove += Input.GetAxis("Mouse Y") * 0.02f;
+        }
+
+        MoveTarget();
+    }
+
+    void ScrollWheelToZoom()
+    {
+        velocityZoom += zoomSpeed * Input.mouseScrollDelta.y * mouseZoomSpeed;
     }
 
     public static float ClampAngle(float angle, float min, float max)
@@ -141,5 +153,25 @@ public class CameraOrbit : MonoBehaviour
         transform.position = _position;
         velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
         velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
+    }
+
+    void MoveTarget()
+    {
+        Target.Translate(-velocityXMove, 0, -velocityYMove, Space.Self);
+
+        float newXPos = Mathf.Clamp(Target.position.x, Flor.position.x - _sizeOfField.x / 2, Flor.position.x + _sizeOfField.x / 2);
+        float newZPos = Mathf.Clamp(Target.position.z, Flor.position.z - _sizeOfField.z / 2, Flor.position.z + _sizeOfField.z / 2);
+
+        Target.position = new Vector3(newXPos, Target.position.y, newZPos);
+
+        velocityXMove = Mathf.Lerp(velocityXMove, 0, Time.deltaTime * smoothTime);
+        velocityYMove = Mathf.Lerp(velocityYMove, 0, Time.deltaTime * smoothTime);
+    }
+
+    void ChangeDistance()
+    {
+        distance = Mathf.Clamp(distance - velocityZoom * Time.deltaTime, distanceMin, distanceMax);
+
+        velocityZoom = Mathf.Lerp(velocityZoom, 0, Time.deltaTime * smoothTime);
     }
 }
