@@ -90,7 +90,7 @@ public class DiceRoller : MonoBehaviour
 
             rb.velocity = new Vector3(0, 0, 0);
             rb.AddForce(direction * 2, ForceMode.Impulse);
-            rb.AddTorque(Vector3.up * 10, ForceMode.Impulse);
+            rb.AddTorque(new Vector3(Random.Range(0f,1f), Random.Range(0f, 1f), Random.Range(0f, 1f)).normalized * 10, ForceMode.Impulse);
 
             Time.timeScale = 2f;
 
