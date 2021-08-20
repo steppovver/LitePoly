@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector3 playerOffset2;
 
     public bool isAlone = false;
+    public bool isMoving = false;
 
     private void Start()
     {
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void StartMoving(int amountSteps)
     {
+        isMoving = true;
         StopAllCoroutines();
         StartCoroutine(MovementCoroutine(amountSteps));
     }
@@ -37,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForSeconds(_delayBetweenSteps);
         }
         RollADiceButton.Instance.myButton.interactable = true;
+        isMoving = false;
     }
 
     private IEnumerator MoveToNextStep(Vector3 target)

@@ -79,11 +79,16 @@ public class CameraOrbit : MonoBehaviour
     {
         if (Input.touchCount == 2 && Input.GetTouch(0).phase == TouchPhase.Moved && Input.GetTouch(1).phase == TouchPhase.Moved)
         {
-            Vector3 curDist = Input.GetTouch(0).position - Input.GetTouch(1).position; //current distance between finger touches
-            Vector3 prevDist = ((Input.GetTouch(0).position - Input.GetTouch(0).deltaPosition) - (Input.GetTouch(1).position - Input.GetTouch(1).deltaPosition)); //difference in previous locations using delta position
-            float touchDelta = curDist.magnitude - prevDist.magnitude;
-            velocityZoom += zoomSpeed * touchDelta * 0.005f;
+            Touch touchA = Input.GetTouch(0);
+            Touch touchB = Input.GetTouch(1);
+            Vector2 touchADirection = touchA.position - touchA.deltaPosition;
+            Vector2 touchBDirection = touchB.position - touchB.deltaPosition;
 
+            float dstBtwTouchesPositions = Vector2.Distance(touchA.position, touchB.position);
+            float dstBtwTouchesDirections = Vector2.Distance(touchADirection, touchBDirection);
+
+            float touchDelta = dstBtwTouchesPositions - dstBtwTouchesDirections;
+            velocityZoom += zoomSpeed * touchDelta * 0.005f;
 
             if (touchDelta < 1000)
             {
