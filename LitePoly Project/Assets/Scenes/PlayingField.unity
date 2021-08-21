@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.008311446, g: 0.06361777, b: 0.19869436, a: 1}
+  m_IndirectSpecularColor: {r: 0.007787464, g: 0.062324326, b: 0.19576952, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2768,10 +2768,11 @@ MonoBehaviour:
   xSpeed: 1
   ySpeed: 5
   zoomSpeed: 20
+  mouseZoomSpeed: 1
   yMinLimit: 10
   yMaxLimit: 90
-  distanceMin: 20
-  distanceMax: 10
+  distanceMin: 5
+  distanceMax: 20
   smoothTime: 11.47
 --- !u!4 &987895581 stripped
 Transform:
