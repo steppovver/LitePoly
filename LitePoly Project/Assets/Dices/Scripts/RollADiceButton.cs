@@ -37,4 +37,9 @@ public class RollADiceButton : MonoBehaviour
         myButton.interactable = false;
         PlayerHandler.Instance.NewPLayerTurn();
     }
+
+    public void SetColor(Color color)
+    {
+        GetComponent<Image>().color = color;
+    }
 }

@@ -28,7 +28,7 @@ public class PathFinder
         if (previusStep.playerMovementList.Contains(playerMovement))
         {
             previusStep.playerMovementList.Remove(playerMovement);
-            playerMovement.OnPlayerStop.RemoveListener(previusStep.IfPlayerStopped);
+            playerMovement.OnCurrentPlayerStop.RemoveListener(previusStep.IfPlayerStopped);
         }
 
         if (previusStep.playerMovementList.Count == 1)
@@ -54,7 +54,7 @@ public class PathFinder
         }
 
         nextStep.playerMovementList.Add(playerMovement);
-        playerMovement.OnPlayerStop.AddListener(nextStep.IfPlayerStopped);
+        playerMovement.OnCurrentPlayerStop.AddListener(nextStep.IfPlayerStopped);
 
 
         return nextStep.transform.position;

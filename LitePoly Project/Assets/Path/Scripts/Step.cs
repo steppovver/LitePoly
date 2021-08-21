@@ -14,6 +14,8 @@ public class Step : MonoBehaviour
     public void IfPlayerStopped(PlayerMovement playerMovement)
     {
         Init();
+        PlayerHandler.Instance.PassTheMoveToNextPlayer();
+        RollADiceButton.Instance.myButton.interactable = true;
     }
 
     public virtual void Init()

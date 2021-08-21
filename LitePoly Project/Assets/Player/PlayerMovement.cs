@@ -6,8 +6,11 @@ using System;
 
 [System.Serializable]
 public class Event : UnityEvent<PlayerMovement> { }
+
 public class PlayerMovement : MonoBehaviour
 {
+    public Event OnCurrentPlayerStop;
+
     PathFinder pathFinder;
 
     [SerializeField] private float _delayBetweenSteps;
@@ -19,12 +22,10 @@ public class PlayerMovement : MonoBehaviour
     public bool isAlone = false;
     public bool isMoving = false;
 
-    public Event OnPlayerStop;
-
     private void Start()
     {
-        if (OnPlayerStop == null)
-            OnPlayerStop = new Event();
+        if (OnCurrentPlayerStop == null)
+            OnCurrentPlayerStop = new Event();
 
         pathFinder = new PathFinder();
         transform.position = playerOffset2 + playerOffset + pathFinder.getVectorByIndex(0);
@@ -46,9 +47,11 @@ public class PlayerMovement : MonoBehaviour
             yield return StartCoroutine(MoveToNextStep(nextStep));
             yield return new WaitForSeconds(_delayBetweenSteps);
         }
-        RollADiceButton.Instance.myButton.interactable = true;
+
+
+        // when player stoped
         isMoving = false;
-        OnPlayerStop.Invoke(this);
+        OnCurrentPlayerStop.Invoke(this);
     }
 
     private IEnumerator MoveToNextStep(Vector3 target)
