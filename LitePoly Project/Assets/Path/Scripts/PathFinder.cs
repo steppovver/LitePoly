@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PathFinder
 {
@@ -27,6 +28,7 @@ public class PathFinder
         if (previusStep.playerMovementList.Contains(playerMovement))
         {
             previusStep.playerMovementList.Remove(playerMovement);
+            playerMovement.OnPlayerStop.RemoveListener(previusStep.IfPlayerStopped);
         }
 
         if (previusStep.playerMovementList.Count == 1)
@@ -52,6 +54,7 @@ public class PathFinder
         }
 
         nextStep.playerMovementList.Add(playerMovement);
+        playerMovement.OnPlayerStop.AddListener(nextStep.IfPlayerStopped);
 
 
         return nextStep.transform.position;

@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System;
 
+[System.Serializable]
+public class Event : UnityEvent<PlayerMovement> { }
 public class PlayerMovement : MonoBehaviour
 {
     PathFinder pathFinder;
@@ -16,8 +19,13 @@ public class PlayerMovement : MonoBehaviour
     public bool isAlone = false;
     public bool isMoving = false;
 
+    public Event OnPlayerStop;
+
     private void Start()
     {
+        if (OnPlayerStop == null)
+            OnPlayerStop = new Event();
+
         pathFinder = new PathFinder();
         transform.position = playerOffset2 + playerOffset + pathFinder.getVectorByIndex(0);
     }
@@ -40,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         }
         RollADiceButton.Instance.myButton.interactable = true;
         isMoving = false;
+        OnPlayerStop.Invoke(this);
     }
 
     private IEnumerator MoveToNextStep(Vector3 target)

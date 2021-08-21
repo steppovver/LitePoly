@@ -1,4 +1,4 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,12 +28,12 @@ public class DiceRoller : MonoBehaviour
 
     List<GameObject> dices = new List<GameObject>();
 
-    public UnityEvent OnDicePair;
+    public UnityEvent OnTrowDiceOneMoreTime;
 
     private void Start()
     {
-        if (OnDicePair == null)
-            OnDicePair = new UnityEvent();
+        if (OnTrowDiceOneMoreTime == null)
+            OnTrowDiceOneMoreTime = new UnityEvent();
     }
 
     public void SetUpDicesAndRoll(int numberOfDices, PlayerMovement playerObj)
@@ -131,8 +131,8 @@ public class DiceRoller : MonoBehaviour
             int currentDiceNumber = item.GetComponent<Dice>().GetDiceCount();
             if (dices.Count == 2 && currentDiceNumber == countDices)
             {
-                print("Выпала пара");
-                OnDicePair.Invoke();
+                print("Double dice");
+                OnTrowDiceOneMoreTime.Invoke();
             }
             countDices += currentDiceNumber;
         }
