@@ -43,6 +43,14 @@ public class PlayerHandler : MonoBehaviour
 
     PlayerMovement _activePlayer;
 
+    void PlayersInit()
+    {
+        for (int i = 0; i < _numberOfPlayers; i++)
+        {
+            Instantiate(playersPrefabs[i], transform);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,14 +69,6 @@ public class PlayerHandler : MonoBehaviour
         rollingDice = DiceRoller.Instance;
 
         rollingDice.OnTrowDiceOneMoreTime.AddListener(OneMoreAttempt);
-    }
-
-    void PlayersInit()
-    {
-        for (int i = 0; i < _numberOfPlayers; i++)
-        {
-            Instantiate(playersPrefabs[i], transform);
-        }
     }
 
     public void NewPLayerTurn()
