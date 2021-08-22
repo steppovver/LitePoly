@@ -29,7 +29,7 @@ public class PlayerHandler : MonoBehaviour
 /// 
 /// </summary>
 
-    DiceRoller rollingDice;
+    DiceRoller _diceRoller;
 
     [SerializeField] private int _amountOfDice;
     [SerializeField] private int _numberOfPlayers;
@@ -38,8 +38,8 @@ public class PlayerHandler : MonoBehaviour
     private int _indexOfActivePlayer = 0;
     private bool _isOneMoreAttempt = false;
 
-    [SerializeField] private List<GameObject> playersPrefabs;
-    public PlayerMovement[] Players;
+    [SerializeField] private List<GameObject> _playersPrefabs;
+    public PlayerMovement[] players;
 
     PlayerMovement _activePlayer;
 
@@ -47,28 +47,28 @@ public class PlayerHandler : MonoBehaviour
     {
         for (int i = 0; i < _numberOfPlayers; i++)
         {
-            Instantiate(playersPrefabs[i], transform);
+            Instantiate(_playersPrefabs[i], transform);
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Players = GetComponentsInChildren<PlayerMovement>();
+        players = GetComponentsInChildren<PlayerMovement>();
 
-        for (int i = 0; i < Players.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
-            PlayerMovement temp = Players[i];
-            int randomIndex = Random.Range(i, Players.Length);
-            Players[i] = Players[randomIndex];
-            Players[randomIndex] = temp;
+            PlayerMovement temp = players[i];
+            int randomIndex = Random.Range(i, players.Length);
+            players[i] = players[randomIndex];
+            players[randomIndex] = temp;
         }
 
         PassTheMoveToNextPlayer();
 
-        rollingDice = DiceRoller.Instance;
+        _diceRoller = DiceRoller.Instance;
 
-        rollingDice.OnTrowDiceOneMoreTime.AddListener(OneMoreAttempt);
+        _diceRoller.OnThrowDiceOneMoreTime.AddListener(OneMoreAttempt);
     }
 
     public void NewPLayerTurn()
@@ -76,7 +76,7 @@ public class PlayerHandler : MonoBehaviour
         _numberOfMoves++;
 
 
-        rollingDice.SetUpDicesAndRoll(_amountOfDice, _activePlayer);
+        _diceRoller.SetUpDicesAndRoll(_amountOfDice, _activePlayer);
     }
 
     void OneMoreAttempt()
@@ -94,7 +94,7 @@ public class PlayerHandler : MonoBehaviour
             _indexOfActivePlayer = (_indexOfActivePlayer + 1) % _numberOfPlayers;
         }
         _isOneMoreAttempt = false;
-        _activePlayer = Players[_indexOfActivePlayer];
+        _activePlayer = players[_indexOfActivePlayer];
 
         RollADiceButton.Instance.SetColor(_activePlayer.GetComponent<Renderer>().material.color);
     }

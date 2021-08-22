@@ -11,13 +11,13 @@ public class PlayerMovement : MonoBehaviour
 {
     public Event OnCurrentPlayerStop;
 
-    PathFinder pathFinder;
+    PathFinder _pathFinder;
 
     [SerializeField] private float _delayBetweenSteps;
     [SerializeField] private float _animDuration;
 
-    [SerializeField] private Vector3 playerOffset;
-    [SerializeField] private Vector3 playerOffset2;
+    [SerializeField] private Vector3 _playerOffset;
+    [SerializeField] private Vector3 _playerOffset2;
 
     public bool isAlone = false;
     public bool isMoving = false;
@@ -27,8 +27,8 @@ public class PlayerMovement : MonoBehaviour
         if (OnCurrentPlayerStop == null)
             OnCurrentPlayerStop = new Event();
 
-        pathFinder = new PathFinder();
-        transform.position = playerOffset2 + playerOffset + pathFinder.getVectorByIndex(0);
+        _pathFinder = new PathFinder();
+        transform.position = _playerOffset2 + _playerOffset + _pathFinder.getVectorByIndex(0);
     }
 
     public void StartMoving(int amountSteps)
@@ -40,10 +40,10 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator MovementCoroutine(int amountSteps)
     {
-        int endOfTurnIndex = pathFinder.CurrentStep + amountSteps;
-        while (pathFinder.CurrentStep != endOfTurnIndex)
+        int endOfTurnIndex = _pathFinder.CurrentStep + amountSteps;
+        while (_pathFinder.CurrentStep != endOfTurnIndex)
         {
-            Vector3 nextStep = pathFinder.getNextStepPosition(this);
+            Vector3 nextStep = _pathFinder.getNextStepPosition(this);
             yield return StartCoroutine(MoveToNextStep(nextStep));
             yield return new WaitForSeconds(_delayBetweenSteps);
         }
@@ -60,9 +60,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isAlone)
         {
-            target += playerOffset2;
+            target += _playerOffset2;
         }
-        target += playerOffset;
+        target += _playerOffset;
 
         float t = 0;
         float animDuration = _animDuration;
@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 startPosition = transform.position;
 
-        Vector3 target = transform.position + playerOffset2 * whichWayToTurn;
+        Vector3 target = transform.position + _playerOffset2 * whichWayToTurn;
 
         float t = 0;
         float animDuration = _animDuration / 2;

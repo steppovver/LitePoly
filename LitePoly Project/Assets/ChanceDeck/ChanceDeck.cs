@@ -24,6 +24,6 @@ public class ChanceDeck : MonoBehaviour
     public void GetNewCard()
     {
         print("congrat, go one more turn");
-        DiceRoller.Instance.OnTrowDiceOneMoreTime.Invoke();
+        DiceRoller.Instance.OnThrowDiceOneMoreTime.Invoke();
     }
 }

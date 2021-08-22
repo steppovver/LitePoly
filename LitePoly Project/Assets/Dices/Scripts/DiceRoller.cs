@@ -24,16 +24,16 @@ public class DiceRoller : MonoBehaviour
     }
 
 
-    [SerializeField] private GameObject dicePrefab;
+    [SerializeField] private GameObject _dicePrefab;
 
-    List<GameObject> dices = new List<GameObject>();
+    List<GameObject> _dices = new List<GameObject>();
 
-    public UnityEvent OnTrowDiceOneMoreTime;
+    public UnityEvent OnThrowDiceOneMoreTime;
 
     private void Start()
     {
-        if (OnTrowDiceOneMoreTime == null)
-            OnTrowDiceOneMoreTime = new UnityEvent();
+        if (OnThrowDiceOneMoreTime == null)
+            OnThrowDiceOneMoreTime = new UnityEvent();
     }
 
     public void SetUpDicesAndRoll(int numberOfDices, PlayerMovement playerObj)
@@ -51,26 +51,26 @@ public class DiceRoller : MonoBehaviour
 
     void DiceInit(int numberOfDices)
     {
-        while (dices.Count != numberOfDices)
+        while (_dices.Count != numberOfDices)
         {
-            if (dices.Count < numberOfDices)
+            if (_dices.Count < numberOfDices)
             {
                 GameObject newDice = Instantiate
                     (
-                                                dicePrefab,
+                                                _dicePrefab,
                                                 new Vector3(
-                                                    transform.position.x + dices.Count,
+                                                    transform.position.x + _dices.Count,
                                                     transform.position.y,
                                                     transform.position.z),
                                                 Quaternion.identity,
                                                 transform
                                                 );
-                dices.Add(newDice);
+                _dices.Add(newDice);
             }
-            else if (dices.Count > numberOfDices)
+            else if (_dices.Count > numberOfDices)
             {
-                Destroy(dices[0]);
-                dices.RemoveAt(0);
+                Destroy(_dices[0]);
+                _dices.RemoveAt(0);
             }
         }
     }
@@ -78,7 +78,7 @@ public class DiceRoller : MonoBehaviour
     void RollTheDice()
     {
         int diceDistance = 0;
-        foreach (var item in dices)
+        foreach (var item in _dices)
         {
 
             item.transform.position = transform.position + Vector3.forward * diceDistance;
@@ -86,7 +86,7 @@ public class DiceRoller : MonoBehaviour
             item.transform.rotation = Quaternion.Euler(Random.Range(-180f, 180f), Random.Range(-180f, 180f), Random.Range(-180f, 180f));
             
             Rigidbody rb = item.GetComponent<Rigidbody>();
-            Vector3 direction = new Vector3(0,0,0) - item.transform.position;
+            Vector3 direction = new Vector3(0,0,0) + Vector3.forward * diceDistance - item.transform.position;
 
             rb.velocity = new Vector3(0, 0, 0);
             rb.AddForce(direction * 2, ForceMode.Impulse);
@@ -115,7 +115,7 @@ public class DiceRoller : MonoBehaviour
 
     bool IsEveryDiceStopped()
     {
-        foreach (var item in dices)
+        foreach (var item in _dices)
         {
             if (item.GetComponent<Dice>().IsMoving()) return false;
         }
@@ -126,13 +126,13 @@ public class DiceRoller : MonoBehaviour
     int CalcualteSumOfDices()
     {
         int countDices = 0;
-        foreach (var item in dices)
+        foreach (var item in _dices)
         {
             int currentDiceNumber = item.GetComponent<Dice>().GetDiceCount();
-            if (dices.Count == 2 && currentDiceNumber == countDices)
+            if (_dices.Count == 2 && currentDiceNumber == countDices)
             {
                 print("Double dice");
-                OnTrowDiceOneMoreTime.Invoke();
+                OnThrowDiceOneMoreTime.Invoke();
             }
             countDices += currentDiceNumber;
         }
