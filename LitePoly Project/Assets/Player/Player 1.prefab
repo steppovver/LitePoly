@@ -99,7 +99,7 @@ MonoBehaviour:
       m_Calls: []
   _delayBetweenSteps: 0.05
   _animDuration: 0.3
-  playerOffset: {x: 0, y: 0.2, z: 0}
-  playerOffset2: {x: 0.2, y: 0, z: 0.2}
+  _playerOffset: {x: 0, y: 0.2, z: 0}
+  _playerOffset2: {x: 0.2, y: 0, z: 0.2}
   isAlone: 0
   isMoving: 0

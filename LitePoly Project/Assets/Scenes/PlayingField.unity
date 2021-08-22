@@ -3924,9 +3924,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6984da2cf636e7844907d547fad245ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dicePrefab: {fileID: 5867215894040466768, guid: af77fd1185cd71340878d46eed44eb8a,
+  _dicePrefab: {fileID: 5867215894040466768, guid: af77fd1185cd71340878d46eed44eb8a,
     type: 3}
-  OnTrowDiceOneMoreTime:
+  OnThrowDiceOneMoreTime:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1554005393
@@ -5031,12 +5031,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _amountOfDice: 2
   _numberOfPlayers: 4
-  playersPrefabs:
+  _playersPrefabs:
   - {fileID: 6102920214696088754, guid: 7ca63371d7393c741986ee5f3b5e6310, type: 3}
   - {fileID: 6102920214696088754, guid: 1d597b45a2a18064b89bfab0203d40b2, type: 3}
   - {fileID: 6102920214696088754, guid: 60755d214ca8b194cbb9a4e3bdd42bf3, type: 3}
   - {fileID: 6102920214696088754, guid: 4cc19742ad49a0b4da1c29bbc115bc93, type: 3}
-  Players: []
+  players: []
 --- !u!1001 &2038595301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5541,75 +5541,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2137002275}
   m_CullTransparentMesh: 1
---- !u!1001 &1274099632907758080
+--- !u!1001 &3242176778825199225
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2006218484667295455, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114161, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
-      propertyPath: m_Name
-      value: ChanceDeck
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f2fada30a2c0f614ea2eeb759ba229e7, type: 2}
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.35
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.34
+      value: 0.352
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.6
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8897278170223961964, guid: 19cd749031fde8249be687c506ae0d7f,
+    - target: {fileID: 3242176778066114163, guid: 3237b1991adc3ac429eb13e5f1859bc3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3242176778066114172, guid: 3237b1991adc3ac429eb13e5f1859bc3,
+        type: 3}
+      propertyPath: m_Name
+      value: Chance Deck
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 19cd749031fde8249be687c506ae0d7f, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 3237b1991adc3ac429eb13e5f1859bc3, type: 3}
 --- !u!1001 &5642459377539687167
 PrefabInstance:
   m_ObjectHideFlags: 0
