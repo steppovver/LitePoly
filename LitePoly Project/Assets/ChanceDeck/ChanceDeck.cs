@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class ChanceDeck : MonoBehaviour
 {
@@ -45,11 +45,11 @@ public class ChanceDeck : MonoBehaviour
         ResetDeck();
     }
 
-    public void DealNewChanceCard()
+    public void DealNewChanceCard(UnityEvent OnAllScriptsDone)
     {
-        print("congrat, go one more turn");
         ChanceCard temp = cardsList[0];
-        ChanceCard go = Instantiate(temp, gameObject.transform);
+        ChanceCard go = Instantiate(temp, transform.position, Quaternion.identity, gameObject.transform);
+        go.OnAllScriptsDone = OnAllScriptsDone;
         cardsList.RemoveAt(0);
         cardsList.Add(temp);
     }
@@ -58,7 +58,7 @@ public class ChanceDeck : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            DealNewChanceCard();
+            DealNewChanceCard(null);
         }
     }
 }

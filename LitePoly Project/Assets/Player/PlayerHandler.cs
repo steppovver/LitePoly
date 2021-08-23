@@ -41,7 +41,7 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] private List<GameObject> _playersPrefabs;
     public PlayerMovement[] players;
 
-    PlayerMovement _activePlayer;
+    public PlayerMovement _activePlayer; // debug public
 
     void PlayersInit()
     {
@@ -87,7 +87,6 @@ public class PlayerHandler : MonoBehaviour
 
     public void PassTheMoveToNextPlayer()
     {
-        print("try to pass");
         if (!_isOneMoreAttempt)
         {
             print("pass the move");

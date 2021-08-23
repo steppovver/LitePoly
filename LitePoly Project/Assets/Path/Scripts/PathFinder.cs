@@ -24,7 +24,7 @@ public class PathFinder
 
     public Vector3 getNextStepPosition(PlayerMovement playerMovement)
     {
-        Step previusStep = PathStep[CurrentStep % PathStep.Length];
+        Step previusStep = PathStep[CurrentStep];
         if (previusStep.playerMovementList.Contains(playerMovement))
         {
             previusStep.playerMovementList.Remove(playerMovement);
@@ -37,8 +37,9 @@ public class PathFinder
         }
 
         CurrentStep++;
+        CurrentStep = CurrentStep % PathStep.Length;
 
-        Step nextStep = PathStep[CurrentStep % PathStep.Length];
+        Step nextStep = PathStep[CurrentStep];
 
         if (nextStep.playerMovementList.Count > 0)
         {
@@ -58,5 +59,12 @@ public class PathFinder
 
 
         return nextStep.transform.position;
+    }
+
+    public int AddSteps(int amountSteps)
+    {
+        int targetStepIndex = CurrentStep + amountSteps;
+        targetStepIndex = targetStepIndex % PathStep.Length;
+        return targetStepIndex;
     }
 }

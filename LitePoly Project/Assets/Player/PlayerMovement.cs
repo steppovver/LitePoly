@@ -31,16 +31,21 @@ public class PlayerMovement : MonoBehaviour
         transform.position = _playerOffset2 + _playerOffset + _pathFinder.getVectorByIndex(0);
     }
 
-    public void StartMoving(int amountSteps)
+    public void StartMoving(int amountSteps, int targetIndex = 0) // targetIndex for Debug 
     {
         isMoving = true;
         StopAllCoroutines();
-        StartCoroutine(MovementCoroutine(amountSteps));
+        StartCoroutine(MovementCoroutine(amountSteps, targetIndex));
     }
 
-    private IEnumerator MovementCoroutine(int amountSteps)
+    private IEnumerator MovementCoroutine(int amountSteps, int targetIndex) // targetIndex for Debug 
     {
-        int endOfTurnIndex = _pathFinder.CurrentStep + amountSteps;
+        int endOfTurnIndex = _pathFinder.AddSteps(amountSteps);
+        if (amountSteps < 0)
+        {
+            endOfTurnIndex = targetIndex;
+        }
+
         while (_pathFinder.CurrentStep != endOfTurnIndex)
         {
             Vector3 nextStep = _pathFinder.getNextStepPosition(this);
