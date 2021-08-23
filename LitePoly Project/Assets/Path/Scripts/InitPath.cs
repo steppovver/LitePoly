@@ -23,5 +23,10 @@ public class InitPath : MonoBehaviour
         }
 
         PathStep = GetComponentsInChildren<Step>();
+
+        for (int i = 0; i < PathStep.Length; i++)
+        {
+            PathStep[i].myIndex = i;
+        }
     }
 }

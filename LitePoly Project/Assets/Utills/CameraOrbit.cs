@@ -109,7 +109,7 @@ public class CameraOrbit : MonoBehaviour
 
     void DragMouseOrbit()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(2))
         {
             velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
             velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;

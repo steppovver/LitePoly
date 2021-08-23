@@ -9,6 +9,8 @@ public class Step : MonoBehaviour
 
     public UnityEvent OnAllScriptsDone;
 
+    public int myIndex; // for Debug public
+
     private void Start()
     {
         if (OnAllScriptsDone == null)
@@ -36,5 +38,15 @@ public class Step : MonoBehaviour
     public virtual void Init()
     {
         OnAllScriptsDone.Invoke();
+    }
+
+    private void OnMouseOver() // Debug Method
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            var step = GetComponent<Step>();
+            var activePlayer = PlayerHandler.Instance._activePlayer;
+            activePlayer.StartMoving(-1, step.myIndex);
+        }
     }
 }
