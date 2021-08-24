@@ -43,7 +43,7 @@ public class CameraOrbit : MonoBehaviour
     float _distance = 20.0f;
     float _distanceMin = 5f;
     float _distanceMax = 20f;
-    float _smoothTime = 2f;
+    float _smoothTime = 10f;
 
     float _rotationXAxis = 0.0f;
     float _rotationYAxis = 0.0f;
