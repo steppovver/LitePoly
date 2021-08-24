@@ -105,12 +105,16 @@ public class DiceRoller : MonoBehaviour
         // wait for dices to stop
         bool isStop = false;
         int stopFrames = 0;
-        while (!isStop && stopFrames < 10)
+        while (!isStop && stopFrames < 15)
         {
             isStop = IsEveryDiceStopped();
             if (isStop)
             {
                 stopFrames++;
+            }
+            else
+            {
+                stopFrames = 0;
             }
             yield return null;
         }

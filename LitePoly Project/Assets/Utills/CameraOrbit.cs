@@ -53,16 +53,21 @@ public class CameraOrbit : MonoBehaviour
     float _velocityYMove = 0.0f;
     float _velocityZoom = 0.0f;
 
-    float _horizontalRotateSens = 10.0f;
-    float _verticalRotateSens = 10.0f;
-    float _zoomSpeed = 1.0f;
-    float _moveSens = 1.0f;
+    float _horizontalRotateSens;
+    float _verticalRotateSens;
+    float _zoomSpeed;
+    float _moveSens;
 
     Vector3 _position;
     Vector3 _sizeOfField;
 
     private void Start()
     {
+        _horizontalRotateSens = HorizontalRotateSens;
+        _verticalRotateSens = VerticalRotateSens ;
+        _zoomSpeed = ZoomSpeed;
+        _moveSens = MoveSens;
+
         Target.position = Flor.position;
 
         GetSizeOfFieled();
@@ -76,15 +81,19 @@ public class CameraOrbit : MonoBehaviour
 
     void Update()
     {
-        TwoTouchInput();
-        OneTouchInput();
-
-        if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+        if (!PauseScript.GameIsPaused)
         {
-            DragMouseOrbit();
-            DragMouseToMove();
-            ScrollWheelToZoom();
+            TwoTouchInput();
+            OneTouchInput();
+
+            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                DragMouseOrbit();
+                DragMouseToMove();
+                ScrollWheelToZoom();
+            }
         }
+        
 
         Target.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }

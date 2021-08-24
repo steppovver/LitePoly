@@ -21,13 +21,13 @@ public class SensetivytySlider : MonoBehaviour
     void Start()
     {
         slider = GetComponent<Slider>();
+        cameraOrbit = CameraOrbit.Instance;
         sliderName = slider.gameObject.name;
         if (PlayerPrefs.HasKey(sliderName))
         {
             slider.value = PlayerPrefs.GetFloat(sliderName);
         }
-        myValueText.text = slider.value.ToString("0.00");
-        cameraOrbit = CameraOrbit.Instance;
+        ValueChangeCheck();
         slider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
     }
 
