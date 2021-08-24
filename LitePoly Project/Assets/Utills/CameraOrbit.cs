@@ -30,9 +30,9 @@ public class CameraOrbit : MonoBehaviour
         }
     }
 
-    public float horizontalRotateSens = 10.0f;
-    public float verticalRotateSens = 10.0f;
-    public float zoomSpeed = 1.0f;
+    public float HorizontalRotateSens = 10.0f;
+    public float VerticalRotateSens = 10.0f;
+    public float ZoomSpeed = 1.0f;
     public float MoveSens = 1.0f;
 
     [SerializeField] private Transform Target;
@@ -52,6 +52,11 @@ public class CameraOrbit : MonoBehaviour
     float _velocityXMove = 0.0f;
     float _velocityYMove = 0.0f;
     float _velocityZoom = 0.0f;
+
+    float _horizontalRotateSens = 10.0f;
+    float _verticalRotateSens = 10.0f;
+    float _zoomSpeed = 1.0f;
+    float _moveSens = 1.0f;
 
     Vector3 _position;
     Vector3 _sizeOfField;
@@ -95,8 +100,8 @@ public class CameraOrbit : MonoBehaviour
     {
         if (Input.touchCount == 1)
         {
-            _velocityXMove += Input.GetTouch(0).deltaPosition.x * 0.001f * MoveSens;
-            _velocityYMove += Input.GetTouch(0).deltaPosition.y * 0.001f* MoveSens;
+            _velocityXMove += Input.GetTouch(0).deltaPosition.x * 0.001f * _moveSens;
+            _velocityYMove += Input.GetTouch(0).deltaPosition.y * 0.001f* _moveSens;
         }
 
         MoveTarget();
@@ -119,21 +124,21 @@ public class CameraOrbit : MonoBehaviour
             float touchDelta = dstBtwTouchesPositions - dstBtwTouchesDirections;
             float turnAngleDelta = Mathf.DeltaAngle(PrevTurn, turnAngle);
 
-            if (Mathf.Abs(touchDelta) < Screen.currentResolution.height/100)
+            if (Mathf.Abs(touchDelta) < Screen.currentResolution.height/200)
             {
                 if (Mathf.Abs(turnAngleDelta) > 1)
                 {
-                    _velocityX += horizontalRotateSens * turnAngleDelta * 0.01f;
+                    _velocityX += _horizontalRotateSens * turnAngleDelta * 0.1f;
                 }
                 else
                 {
-                    _velocityY += verticalRotateSens * Input.GetTouch(0).deltaPosition.y * 0.005f;
+                    _velocityY += _verticalRotateSens * Input.GetTouch(0).deltaPosition.y * 0.005f;
 
                 }
             }
             else
             {
-                _velocityZoom += zoomSpeed * touchDelta * 0.005f;
+                _velocityZoom += _zoomSpeed * touchDelta * 0.05f;
             }
 
         }
@@ -146,8 +151,8 @@ public class CameraOrbit : MonoBehaviour
     {
         if (Input.GetMouseButton(2))
         {
-            _velocityX += horizontalRotateSens * Input.GetAxis("Mouse X") * _distance * 0.02f;
-            _velocityY += verticalRotateSens * Input.GetAxis("Mouse Y") * 0.02f;
+            _velocityX += _horizontalRotateSens * Input.GetAxis("Mouse X") * _distance * 0.02f;
+            _velocityY += _verticalRotateSens * Input.GetAxis("Mouse Y") * 0.02f;
         }
 
         CalculateRotation();
@@ -166,7 +171,7 @@ public class CameraOrbit : MonoBehaviour
 
     void ScrollWheelToZoom()
     {
-        _velocityZoom += zoomSpeed * Input.mouseScrollDelta.y * zoomSpeed;
+        _velocityZoom += _zoomSpeed * Input.mouseScrollDelta.y * _zoomSpeed;
     }
 
     public static float ClampAngle(float angle, float min, float max)
@@ -235,16 +240,16 @@ public class CameraOrbit : MonoBehaviour
         switch (sensName)
         {
             case Sensetivity.Horizontal:
-                horizontalRotateSens *= sensMultiplayer;
+                _horizontalRotateSens = HorizontalRotateSens * sensMultiplayer;
                 break;
             case Sensetivity.Vertical:
-                verticalRotateSens *= sensMultiplayer;
+                _verticalRotateSens = VerticalRotateSens * sensMultiplayer;
                 break;
             case Sensetivity.Zoom:
-                zoomSpeed *= sensMultiplayer;
+                _zoomSpeed = ZoomSpeed * sensMultiplayer;
                 break;
             case Sensetivity.Move:
-                MoveSens *= sensMultiplayer;
+                _moveSens = MoveSens * sensMultiplayer;
                 break;
         }
     }

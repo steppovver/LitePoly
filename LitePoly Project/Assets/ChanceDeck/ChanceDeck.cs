@@ -53,12 +53,4 @@ public class ChanceDeck : MonoBehaviour
         cardsList.RemoveAt(0);
         cardsList.Add(temp);
     }
-
-    private void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            DealNewChanceCard(null);
-        }
-    }
 }
