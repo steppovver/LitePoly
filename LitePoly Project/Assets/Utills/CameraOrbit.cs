@@ -3,28 +3,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Sensetivity
+{
+    Horizontal,
+    Vertical,
+    Zoom,
+    Move,
+}
+
 public class CameraOrbit : MonoBehaviour
 {
-    public Transform Target;
-    public Transform Flor;
+    // SINGLETON
+    private static CameraOrbit _instance;
 
-    public float distance = 20.0f;
-    public float xSpeed = 20.0f;
-    public float ySpeed = 20.0f;
+    public static CameraOrbit Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
+    public float horizontalRotateSens = 10.0f;
+    public float verticalRotateSens = 10.0f;
     public float zoomSpeed = 1.0f;
-    public float mouseZoomSpeed = 1.0f;
-    public float yMinLimit = -90f;
-    public float yMaxLimit = 90f;
-    public float distanceMin = 5f;
-    public float distanceMax = 20f;
-    public float smoothTime = 2f;
-    float rotationYAxis = 0.0f;
-    float rotationXAxis = 0.0f;
-    float velocityX = 0.0f;
-    float velocityY = 0.0f;
-    float velocityXMove = 0.0f;
-    float velocityYMove = 0.0f;
-    float velocityZoom = 0.0f;
+    public float MoveSens = 1.0f;
+
+    [SerializeField] private Transform Target;
+    [SerializeField] private Transform Flor;
+
+    float _yMinLimit = 10f;
+    float _yMaxLimit = 90f;
+    float _distance = 20.0f;
+    float _distanceMin = 5f;
+    float _distanceMax = 20f;
+    float _smoothTime = 2f;
+
+    float _rotationXAxis = 0.0f;
+    float _rotationYAxis = 0.0f;
+    float _velocityX = 0.0f;
+    float _velocityY = 0.0f;
+    float _velocityXMove = 0.0f;
+    float _velocityYMove = 0.0f;
+    float _velocityZoom = 0.0f;
 
     Vector3 _position;
     Vector3 _sizeOfField;
@@ -35,8 +62,8 @@ public class CameraOrbit : MonoBehaviour
 
         GetSizeOfFieled();
 
-        rotationXAxis = transform.rotation.eulerAngles.x;
-        rotationYAxis = transform.rotation.eulerAngles.y;
+        _rotationXAxis = transform.rotation.eulerAngles.x;
+        _rotationYAxis = transform.rotation.eulerAngles.y;
 
         Target.position = Vector3.zero;
         Target.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
@@ -68,8 +95,8 @@ public class CameraOrbit : MonoBehaviour
     {
         if (Input.touchCount == 1)
         {
-            velocityXMove += Input.GetTouch(0).deltaPosition.x * 0.001f;
-            velocityYMove += Input.GetTouch(0).deltaPosition.y * 0.001f;
+            _velocityXMove += Input.GetTouch(0).deltaPosition.x * 0.001f * MoveSens;
+            _velocityYMove += Input.GetTouch(0).deltaPosition.y * 0.001f* MoveSens;
         }
 
         MoveTarget();
@@ -86,24 +113,32 @@ public class CameraOrbit : MonoBehaviour
 
             float dstBtwTouchesPositions = Vector2.Distance(touchA.position, touchB.position);
             float dstBtwTouchesDirections = Vector2.Distance(touchADirection, touchBDirection);
+            float turnAngle = Angle(touchA.position, touchB.position);
+            float PrevTurn = Angle(touchADirection, touchBDirection);
 
             float touchDelta = dstBtwTouchesPositions - dstBtwTouchesDirections;
-            velocityZoom += zoomSpeed * touchDelta * 0.005f;
+            float turnAngleDelta = Mathf.DeltaAngle(PrevTurn, turnAngle);
 
-            if (touchDelta < 1000)
+            if (Mathf.Abs(touchDelta) < Screen.currentResolution.height/100)
             {
+                if (Mathf.Abs(turnAngleDelta) > 1)
+                {
+                    _velocityX += horizontalRotateSens * turnAngleDelta * 0.01f;
+                }
+                else
+                {
+                    _velocityY += verticalRotateSens * Input.GetTouch(0).deltaPosition.y * 0.005f;
 
-                velocityX += xSpeed * Input.GetTouch(0).deltaPosition.x * 0.01f;
-                velocityY += ySpeed * Input.GetTouch(0).deltaPosition.y * 0.01f / 10;
+                }
             }
             else
             {
-                velocityZoom += zoomSpeed * touchDelta * 0.005f;
+                _velocityZoom += zoomSpeed * touchDelta * 0.005f;
             }
+
         }
 
         CalculateRotation();
-
         ChangeDistance();
     }
 
@@ -111,8 +146,8 @@ public class CameraOrbit : MonoBehaviour
     {
         if (Input.GetMouseButton(2))
         {
-            velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
-            velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;
+            _velocityX += horizontalRotateSens * Input.GetAxis("Mouse X") * _distance * 0.02f;
+            _velocityY += verticalRotateSens * Input.GetAxis("Mouse Y") * 0.02f;
         }
 
         CalculateRotation();
@@ -122,8 +157,8 @@ public class CameraOrbit : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
-            velocityXMove += Input.GetAxis("Mouse X") * 0.02f;
-            velocityYMove += Input.GetAxis("Mouse Y") * 0.02f;
+            _velocityXMove += Input.GetAxis("Mouse X") * 0.02f;
+            _velocityYMove += Input.GetAxis("Mouse Y") * 0.02f;
         }
 
         MoveTarget();
@@ -131,7 +166,7 @@ public class CameraOrbit : MonoBehaviour
 
     void ScrollWheelToZoom()
     {
-        velocityZoom += zoomSpeed * Input.mouseScrollDelta.y * mouseZoomSpeed;
+        _velocityZoom += zoomSpeed * Input.mouseScrollDelta.y * zoomSpeed;
     }
 
     public static float ClampAngle(float angle, float min, float max)
@@ -145,38 +180,72 @@ public class CameraOrbit : MonoBehaviour
 
     private void CalculateRotation()
     {
-        rotationYAxis += velocityX;
-        rotationXAxis -= velocityY;
-        rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
+        _rotationYAxis += _velocityX;
+        _rotationXAxis -= _velocityY;
+        _rotationXAxis = ClampAngle(_rotationXAxis, _yMinLimit, _yMaxLimit);
 
-        Quaternion rotation = Quaternion.Euler(rotationXAxis, rotationYAxis, 0);
+        Quaternion rotation = Quaternion.Euler(_rotationXAxis, _rotationYAxis, 0);
 
-        Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
+        Vector3 negDistance = new Vector3(0.0f, 0.0f, -_distance);
         _position = rotation * negDistance + Target.position;
 
         transform.rotation = rotation;
         transform.position = _position;
-        velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
-        velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
+        _velocityX = Mathf.Lerp(_velocityX, 0, Time.deltaTime * _smoothTime);
+        _velocityY = Mathf.Lerp(_velocityY, 0, Time.deltaTime * _smoothTime);
     }
 
     void MoveTarget()
     {
-        Target.Translate(-velocityXMove, 0, -velocityYMove, Space.Self);
+        Target.Translate(-_velocityXMove, 0, -_velocityYMove, Space.Self);
 
         float newXPos = Mathf.Clamp(Target.position.x, Flor.position.x - _sizeOfField.x / 2, Flor.position.x + _sizeOfField.x / 2);
         float newZPos = Mathf.Clamp(Target.position.z, Flor.position.z - _sizeOfField.z / 2, Flor.position.z + _sizeOfField.z / 2);
 
         Target.position = new Vector3(newXPos, Target.position.y, newZPos);
 
-        velocityXMove = Mathf.Lerp(velocityXMove, 0, Time.deltaTime * smoothTime);
-        velocityYMove = Mathf.Lerp(velocityYMove, 0, Time.deltaTime * smoothTime);
+        _velocityXMove = Mathf.Lerp(_velocityXMove, 0, Time.deltaTime * _smoothTime);
+        _velocityYMove = Mathf.Lerp(_velocityYMove, 0, Time.deltaTime * _smoothTime);
     }
 
     void ChangeDistance()
     {
-        distance = Mathf.Clamp(distance - velocityZoom * Time.deltaTime, distanceMin, distanceMax);
+        _distance = Mathf.Clamp(_distance - _velocityZoom * Time.deltaTime, _distanceMin, _distanceMax);
 
-        velocityZoom = Mathf.Lerp(velocityZoom, 0, Time.deltaTime * smoothTime);
+        _velocityZoom = Mathf.Lerp(_velocityZoom, 0, Time.deltaTime * _smoothTime);
+    }
+
+    float Angle (Vector2 pos1, Vector2 pos2)
+    {
+        Vector2 from = pos2 - pos1;
+        Vector2 to = new Vector2(1, 0);
+
+        float result = Vector2.Angle(from, to);
+        Vector3 cross = Vector3.Cross(from, to);
+
+        if (cross.z > 0)
+        {
+            result = 360f - result;
+        }
+        return result;
+    }
+
+    public void ChangeSensetivity(Sensetivity sensName, float sensMultiplayer)
+    {
+        switch (sensName)
+        {
+            case Sensetivity.Horizontal:
+                horizontalRotateSens *= sensMultiplayer;
+                break;
+            case Sensetivity.Vertical:
+                verticalRotateSens *= sensMultiplayer;
+                break;
+            case Sensetivity.Zoom:
+                zoomSpeed *= sensMultiplayer;
+                break;
+            case Sensetivity.Move:
+                MoveSens *= sensMultiplayer;
+                break;
+        }
     }
 }

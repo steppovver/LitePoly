@@ -42,7 +42,7 @@ public class Step : MonoBehaviour
 
     private void OnMouseOver() // Debug Method
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && Application.platform != RuntimePlatform.Android)
         {
             var step = GetComponent<Step>();
             var activePlayer = PlayerHandler.Instance._activePlayer;
