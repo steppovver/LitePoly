@@ -34,7 +34,7 @@ public class PauseScript : MonoBehaviour
 
     [SerializeField] private PauseCanvas _pauseCanvas;
 
-    [SerializeField] private Button _pauseButton;
+    [SerializeField] private Canvas _inGamecanvas;
 
     private void Update()
     {
@@ -54,7 +54,7 @@ public class PauseScript : MonoBehaviour
     public void Resume()
     {
         _pauseCanvas.gameObject.SetActive(false);
-        _pauseButton.gameObject.SetActive(true);
+        _inGamecanvas.gameObject.SetActive(true);
         GameIsPaused = false;
     }
 
@@ -71,7 +71,7 @@ public class PauseScript : MonoBehaviour
 
     public void SetPause()
     {
-        _pauseButton.gameObject.SetActive(false);
+        _inGamecanvas.gameObject.SetActive(false);
         _pauseCanvas.gameObject.SetActive(true);
         GameIsPaused = true;
     }

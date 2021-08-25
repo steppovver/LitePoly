@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class PlayerMoney : MonoBehaviour
 {
-    int _money = 1000000;
+    public int _money = 1000000;
 
     public int Money { get { return _money; } }
+
+    private void Start()
+    {
+        MoneyGUIUpdater.Instance.InitPlayer(this);
+    }
 
     public void addPlayerMoney(int addMount)
     {
