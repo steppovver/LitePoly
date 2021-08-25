@@ -326,4 +326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f59db57e6dde2a49986bdb80384ab28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deck: []
+  deck:
+  - {fileID: -1668206780713803756, guid: b7f5098af2ebf674090b8f8612ec822f, type: 3}
+  - {fileID: -1668206780713803756, guid: 033a0a2c04fc7ab4e8f83fcbb347e8a4, type: 3}
+  - {fileID: -1668206780713803756, guid: 3d7d48319613dab44a156c40300b47af, type: 3}
+  - {fileID: -1668206780713803756, guid: 7097d81b680ebfd42acfbe4c73756295, type: 3}

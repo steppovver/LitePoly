@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class PauseScript : MonoBehaviour
 {
-    // SINGLETON
-    private static PauseMenu _instance;
+    /// <summary>
+    /// SINGLETON Start
+    /// </summary>
+    private static PauseScript _instance;
 
-    public static PauseMenu Instance { get { return _instance; } }
+    public static PauseScript Instance { get { return _instance; } }
 
 
     private void Awake()
@@ -21,41 +25,54 @@ public class PauseMenu : MonoBehaviour
             _instance = this;
         }
     }
+    /// <summary>
+    /// SINGLETON END
+    /// </summary>
+    /// 
 
     public static bool GameIsPaused = false;
 
-    private PauseMenu _PauseMenu;
+    [SerializeField] private PauseCanvas _pauseCanvas;
 
-    private void Start()
-    {
-        _PauseMenu = GetComponentInChildren<PauseMenu>();
-    }
+    [SerializeField] private Button _pauseButton;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            print("esc");
             if (GameIsPaused)
             {
                 Resume();
             }
             else
             {
-                Pause();
+                SetPause();
             }
         }
     }
 
-    void Resume()
+    public void Resume()
     {
-        _PauseMenu.gameObject.SetActive(false);
+        _pauseCanvas.gameObject.SetActive(false);
+        _pauseButton.gameObject.SetActive(true);
         GameIsPaused = false;
     }
 
-    void Pause()
+    public void LoadMenu()
     {
-        _PauseMenu.gameObject.SetActive(true);
+        SceneManager.LoadScene("Main Menu");
+
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void SetPause()
+    {
+        _pauseButton.gameObject.SetActive(false);
+        _pauseCanvas.gameObject.SetActive(true);
         GameIsPaused = true;
     }
 }
