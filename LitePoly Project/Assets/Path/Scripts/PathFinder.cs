@@ -54,7 +54,8 @@ public class PathFinder
             playerMovement.isAlone = true;
         }
 
-        nextStep.playerMovementList.Add(playerMovement);
+
+        nextStep.WhenPlayerGoingTrow(playerMovement);
         playerMovement.OnCurrentPlayerStop.AddListener(nextStep.IfPlayerStopped);
 
 

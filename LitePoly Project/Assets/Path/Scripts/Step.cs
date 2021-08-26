@@ -32,10 +32,10 @@ public class Step : MonoBehaviour
 
     public void IfPlayerStopped(PlayerMovement playerMovement)
     {
-        Init();
+        DoOnPlayerStop();
     }
 
-    public virtual void Init()
+    public virtual void DoOnPlayerStop()
     {
         OnAllScriptsDone.Invoke();
     }
@@ -48,5 +48,10 @@ public class Step : MonoBehaviour
             var activePlayer = PlayerHandler.Instance._activePlayer;
             activePlayer.StartMoving(-1, step.myIndex);
         }
+    }
+
+    public virtual void WhenPlayerGoingTrow(PlayerMovement playerMovement)
+    {
+        playerMovementList.Add(playerMovement);
     }
 }

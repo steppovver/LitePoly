@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class ChanceStep : Step
 {
-    public override void Init()
+    public override void DoOnPlayerStop()
     {
         ChanceDeck.Instance.DealNewChanceCard(OnAllScriptsDone);
     }

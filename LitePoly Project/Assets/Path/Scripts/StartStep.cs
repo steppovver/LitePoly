@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartStep : MonoBehaviour
+public class StartStep : Step
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void WhenPlayerGoingTrow(PlayerMovement playerMovement)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        base.WhenPlayerGoingTrow(playerMovement);
+        print("start");
+        playerMovement.GetComponent<PlayerMoney>().addPlayerMoney(200000);
     }
 }

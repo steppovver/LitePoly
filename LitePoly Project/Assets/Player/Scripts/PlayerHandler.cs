@@ -35,7 +35,7 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] private int _numberOfPlayers;
 
     private int _numberOfMoves = 0;
-    private int _indexOfActivePlayer = 0;
+    private int _indexOfActivePlayer = -1;
     private bool _isOneMoreAttempt = false;
 
     [SerializeField] private List<GameObject> _playersPrefabs;
@@ -62,6 +62,10 @@ public class PlayerHandler : MonoBehaviour
             int randomIndex = Random.Range(i, players.Length);
             players[i] = players[randomIndex];
             players[randomIndex] = temp;
+        }
+        foreach (var item in players)
+        {
+            item.GetComponent<PlayerMoney>().InitMoney();
         }
 
         PassTheMoveToNextPlayer();

@@ -8,13 +8,11 @@ class ImageStorage
 {
     public Image image;
     public TextMeshProUGUI textMesh;
-    public PlayerMoney player;
 
-    public ImageStorage(Image image, TextMeshProUGUI textMesh, PlayerMoney player)
+    public ImageStorage(Image image, TextMeshProUGUI textMesh)
     {
         this.image = image;
         this.textMesh = textMesh;
-        this.player = player;
     }
 }
 
@@ -46,14 +44,16 @@ public class MoneyGUIUpdater : MonoBehaviour
 
     [SerializeField] Image[] images;
     List<ImageStorage> imageStoragesInUse = new List<ImageStorage>();
+    Dictionary<PlayerMoney, ImageStorage> dict = new Dictionary<PlayerMoney, ImageStorage>();
 
     int index = 0;
 
-    public void InitPlayer(PlayerMoney playerMoney)
+    public void InitMoneyOfPlayer(PlayerMoney playerMoney)
     {
         Image image = images[index];
         TextMeshProUGUI textMeshProUGUI = image.GetComponentInChildren<TextMeshProUGUI>();
-        ImageStorage newimageStorage = new ImageStorage(image, textMeshProUGUI, playerMoney);
+        ImageStorage newimageStorage = new ImageStorage(image, textMeshProUGUI);
+        dict.Add(playerMoney, newimageStorage);
 
         Color temp = playerMoney.gameObject.GetComponent<Renderer>().material.color;
         temp.a = 0.5f;
@@ -66,11 +66,8 @@ public class MoneyGUIUpdater : MonoBehaviour
         index++;        
     }
 
-    private void Update()
+    public void MoneyGUIUpdate(PlayerMoney playerMoney)
     {
-        foreach (var item in imageStoragesInUse)
-        {
-            item.textMesh.text = item.player.Money.ToString();
-        }
+        dict[playerMoney].textMesh.text = playerMoney.Money.ToString();
     }
 }
