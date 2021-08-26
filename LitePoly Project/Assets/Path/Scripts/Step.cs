@@ -50,7 +50,7 @@ public class Step : MonoBehaviour
         }
     }
 
-    public virtual void WhenPlayerGoingTrow(PlayerMovement playerMovement)
+    public virtual void WhenPlayerGoingThrow(PlayerMovement playerMovement)
     {
         playerMovementList.Add(playerMovement);
     }

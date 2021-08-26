@@ -55,7 +55,7 @@ public class PathFinder
         }
 
 
-        nextStep.WhenPlayerGoingTrow(playerMovement);
+        nextStep.WhenPlayerGoingThrow(playerMovement);
         playerMovement.OnCurrentPlayerStop.AddListener(nextStep.IfPlayerStopped);
 
 

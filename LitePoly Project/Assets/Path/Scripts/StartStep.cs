@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class StartStep : Step
 {
-    public override void WhenPlayerGoingTrow(PlayerMovement playerMovement)
+    public override void WhenPlayerGoingThrow(PlayerMovement playerMovement)
     {
-        base.WhenPlayerGoingTrow(playerMovement);
+        base.WhenPlayerGoingThrow(playerMovement);
         print("start");
         playerMovement.GetComponent<PlayerMoney>().addPlayerMoney(200000);
     }
