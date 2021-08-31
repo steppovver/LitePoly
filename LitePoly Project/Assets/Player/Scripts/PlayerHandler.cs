@@ -29,19 +29,21 @@ public class PlayerHandler : MonoBehaviour
 /// 
 /// </summary>
 
-    DiceRoller _diceRoller;
 
     [SerializeField] private int _amountOfDice;
     [SerializeField] private int _numberOfPlayers;
 
-    private int _numberOfMoves = 0;
-    private int _indexOfActivePlayer = -1;
-    private bool _isOneMoreAttempt = false;
-
     [SerializeField] private List<GameObject> _playersPrefabs;
+    [SerializeField] private GamePlayCanvas _gamePlayCanvas;
+
+    private int _numberOfMoves = 0;
+    private int _indexOfActivePlayer = 0;
+    private bool _isOneMoreAttempt = false;
+    private DiceRoller _diceRoller;
+
     public PlayerMovement[] players;
 
-    public PlayerMovement _activePlayer; // debug public
+    [HideInInspector] public PlayerMovement _activePlayer; // debug public
 
     void PlayersInit()
     {
@@ -51,7 +53,6 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         players = GetComponentsInChildren<PlayerMovement>();
@@ -68,7 +69,8 @@ public class PlayerHandler : MonoBehaviour
             item.GetComponent<PlayerMoney>().InitMoney();
         }
 
-        PassTheMoveToNextPlayer();
+        _activePlayer = players[_indexOfActivePlayer];
+        RollADiceButton.Instance.SetColor(_activePlayer.GetComponent<Renderer>().material.color);
 
         _diceRoller = DiceRoller.Instance;
 
@@ -93,12 +95,22 @@ public class PlayerHandler : MonoBehaviour
     {
         if (!_isOneMoreAttempt)
         {
+            _activePlayer.numberOfDouble = 0;
             print("pass the move");
             _indexOfActivePlayer = (_indexOfActivePlayer + 1) % _numberOfPlayers;
         }
         _isOneMoreAttempt = false;
         _activePlayer = players[_indexOfActivePlayer];
 
-        RollADiceButton.Instance.SetColor(_activePlayer.GetComponent<Renderer>().material.color);
+        if (_activePlayer.isInPrison)
+        {
+
+            _gamePlayCanvas.ShowPrisonCanvas(_activePlayer);
+        }
+        else
+        {
+            RollADiceButton.Instance.myButton.gameObject.SetActive(true);
+            RollADiceButton.Instance.SetColor(_activePlayer.GetComponent<Renderer>().material.color);
+        }
     }
 }

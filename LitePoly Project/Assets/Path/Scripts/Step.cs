@@ -21,7 +21,6 @@ public class Step : MonoBehaviour
 
     void AllScriptsDone()
     {
-        RollADiceButton.Instance.myButton.interactable = true;
         PlayerHandler.Instance.PassTheMoveToNextPlayer();
     }
 

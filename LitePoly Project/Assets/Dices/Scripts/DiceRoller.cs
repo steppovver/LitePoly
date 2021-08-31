@@ -119,7 +119,15 @@ public class DiceRoller : MonoBehaviour
             yield return null;
         }
 
-        playerObj.StartMoving(CalcualteSumOfDices());
+        int sumOfDice = CalcualteSumOfDices(playerObj);
+        if (sumOfDice > 0)
+        {
+            playerObj.StartMoving(sumOfDice);
+        }
+        else if (sumOfDice == -1)
+        {
+            SetUpDicesAndRoll(_dices.Count, playerObj);
+        }
     }
 
     bool IsEveryDiceStopped()
@@ -132,16 +140,30 @@ public class DiceRoller : MonoBehaviour
         return true;
     }
 
-    int CalcualteSumOfDices()
+    int CalcualteSumOfDices(PlayerMovement playerObj)
     {
         int countDices = 0;
         foreach (var item in _dices)
         {
             int currentDiceNumber = item.GetComponent<Dice>().GetDiceCount();
+            if (currentDiceNumber == -1)
+            {
+                return -1;
+            }
             if (_dices.Count == 2 && currentDiceNumber == countDices)
             {
-                print("Double dice");
-                OnThrowDiceOneMoreTime.Invoke();
+                playerObj.numberOfDouble++;
+                if (playerObj.numberOfDouble < 3)
+                {
+                    print("Double dice");
+                    OnThrowDiceOneMoreTime.Invoke();
+                }
+                else
+                {
+                    print("Go to prison cheater!!!");
+                    StartCoroutine(playerObj.MoveToPrison());
+                    return 0;
+                }
             }
             countDices += currentDiceNumber;
         }

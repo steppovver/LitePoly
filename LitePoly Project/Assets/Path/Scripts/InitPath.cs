@@ -10,6 +10,8 @@ public class InitPath : MonoBehaviour
     public static InitPath Instance { get { return _instance; } }
 
     public Step[] PathStep;
+    public PrisonStep PrisonStep;
+
 
     private void Awake()
     {
@@ -23,6 +25,7 @@ public class InitPath : MonoBehaviour
         }
 
         PathStep = GetComponentsInChildren<Step>();
+        PrisonStep = GetComponentInChildren<PrisonStep>();
 
         for (int i = 0; i < PathStep.Length; i++)
         {

@@ -21,6 +21,10 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isAlone = false;
     public bool isMoving = false;
+    public bool isInPrison = false;
+
+    public int numberOfDouble = 0;
+    public int numberOfTryToEscape = 3;
 
     private void Start()
     {
@@ -114,4 +118,34 @@ public class PlayerMovement : MonoBehaviour
         transform.position = target;
     }
 
+    public IEnumerator MoveToPrison()
+    {
+        Vector3 startPosition = transform.position;
+        PrisonStep prison = _pathFinder.GetPrisonStepPosition(this);
+        Vector3 target = prison.transform.position;
+
+        if (!isAlone)
+        {
+            target += _playerOffset2;
+        }
+        target += _playerOffset;
+
+        float t = 0;
+        float animDuration = _animDuration;
+
+        while (t < 1)
+        {
+            Vector3 parabolicPos = Parabola(startPosition, target, 1, t);
+
+            transform.position = parabolicPos;
+
+            t += Time.deltaTime / animDuration;
+            yield return null;
+        }
+        transform.position = target;
+
+        numberOfTryToEscape = 3;
+        prison.IfPlayerStopped(this);
+        isInPrison = true;
+    }
 }

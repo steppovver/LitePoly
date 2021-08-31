@@ -34,7 +34,7 @@ public class RollADiceButton : MonoBehaviour
 
     public void TaskOnClick()
     {
-        myButton.interactable = false;
+        myButton.gameObject.SetActive(false);
         PlayerHandler.Instance.NewPLayerTurn();
     }
 
