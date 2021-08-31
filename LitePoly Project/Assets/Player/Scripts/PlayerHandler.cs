@@ -43,7 +43,7 @@ public class PlayerHandler : MonoBehaviour
 
     public PlayerMovement[] players;
 
-    [HideInInspector] public PlayerMovement _activePlayer; // debug public
+    [HideInInspector] public PlayerMovement _activePlayer;
 
     void PlayersInit()
     {
@@ -93,7 +93,7 @@ public class PlayerHandler : MonoBehaviour
 
     public void PassTheMoveToNextPlayer()
     {
-        if (!_isOneMoreAttempt)
+        if (!_isOneMoreAttempt || _activePlayer.isInPrison) // тут можно подумать если чувак встал на полицию с парой, может ему сразу дать шанс выйти из тюрьмы или нет хз
         {
             _activePlayer.numberOfDouble = 0;
             print("pass the move");
@@ -102,13 +102,14 @@ public class PlayerHandler : MonoBehaviour
         _isOneMoreAttempt = false;
         _activePlayer = players[_indexOfActivePlayer];
 
-        if (_activePlayer.isInPrison)
+        if (_activePlayer.isInPrison && _activePlayer.numberOfTryToEscape > 0)
         {
 
             _gamePlayCanvas.ShowPrisonCanvas(_activePlayer);
         }
         else
         {
+            _activePlayer.isInPrison = false;
             RollADiceButton.Instance.myButton.gameObject.SetActive(true);
             RollADiceButton.Instance.SetColor(_activePlayer.GetComponent<Renderer>().material.color);
         }

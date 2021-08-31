@@ -119,14 +119,43 @@ public class DiceRoller : MonoBehaviour
             yield return null;
         }
 
-        int sumOfDice = CalcualteSumOfDices(playerObj);
-        if (sumOfDice > 0)
-        {
-            playerObj.StartMoving(sumOfDice);
-        }
-        else if (sumOfDice == -1)
+        bool IsDouble = false;
+        int sumOfDice = CalcualteSumOfDices(playerObj, out IsDouble);
+
+        if (sumOfDice == -1)
         {
             SetUpDicesAndRoll(_dices.Count, playerObj);
+        }
+        else if (!playerObj.isInPrison)
+        {
+            if (playerObj.numberOfDouble < 3)
+            {
+                if (IsDouble)
+                {
+                    print("Double dice");
+                    OnThrowDiceOneMoreTime.Invoke();
+                }
+                playerObj.StartMoving(sumOfDice);
+            }
+            else
+            {
+                print("Go to prison cheater!!!");
+                StartCoroutine(playerObj.MoveToPrison());
+            }
+        }
+        else // if player in prison
+        {
+            if (IsDouble) // если выпала пара
+            {
+                print("Double dice");
+                OnThrowDiceOneMoreTime.Invoke();
+                playerObj.StartMoving(sumOfDice);
+                playerObj.isInPrison = false;
+            }
+            else
+            {
+                PlayerHandler.Instance.PassTheMoveToNextPlayer();
+            }
         }
     }
 
@@ -140,8 +169,9 @@ public class DiceRoller : MonoBehaviour
         return true;
     }
 
-    int CalcualteSumOfDices(PlayerMovement playerObj)
+    int CalcualteSumOfDices(PlayerMovement playerObj, out bool doubl)
     {
+        doubl = false;
         int countDices = 0;
         foreach (var item in _dices)
         {
@@ -152,18 +182,8 @@ public class DiceRoller : MonoBehaviour
             }
             if (_dices.Count == 2 && currentDiceNumber == countDices)
             {
+                doubl = true;
                 playerObj.numberOfDouble++;
-                if (playerObj.numberOfDouble < 3)
-                {
-                    print("Double dice");
-                    OnThrowDiceOneMoreTime.Invoke();
-                }
-                else
-                {
-                    print("Go to prison cheater!!!");
-                    StartCoroutine(playerObj.MoveToPrison());
-                    return 0;
-                }
             }
             countDices += currentDiceNumber;
         }
