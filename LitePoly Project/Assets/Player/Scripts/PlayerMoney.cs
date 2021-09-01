@@ -15,7 +15,7 @@ public class PlayerMoney : MonoBehaviour
         MoneyCheck = _money;
     }
 
-    public void addPlayerMoney(int addMount)
+    public void AddPlayerMoney(int addMount)
     {
         _money = MoneyCheck + addMount;
         MoneyCheck = _money;

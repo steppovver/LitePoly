@@ -34,7 +34,6 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] private int _numberOfPlayers;
 
     [SerializeField] private List<GameObject> _playersPrefabs;
-    [SerializeField] private GamePlayCanvas _gamePlayCanvas;
 
     private int _numberOfMoves = 0;
     private int _indexOfActivePlayer = 0;
@@ -105,7 +104,7 @@ public class PlayerHandler : MonoBehaviour
         if (_activePlayer.isInPrison && _activePlayer.numberOfTryToEscape > 0)
         {
 
-            _gamePlayCanvas.ShowPrisonCanvas(_activePlayer);
+             GamePlayCanvas.Instance.PrisonCanvas.ShowPrisonCanvas(_activePlayer);
         }
         else
         {

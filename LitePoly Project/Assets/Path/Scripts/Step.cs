@@ -11,11 +11,17 @@ public class Step : MonoBehaviour
 
     public int myIndex; // for Debug public
 
+
+
     private void Start()
     {
         if (OnAllScriptsDone == null)
             OnAllScriptsDone = new UnityEvent();
+        OnStart();
+    }
 
+    public virtual void OnStart()
+    {
         OnAllScriptsDone.AddListener(AllScriptsDone);
     }
 
@@ -31,10 +37,10 @@ public class Step : MonoBehaviour
 
     public void IfPlayerStopped(PlayerMovement playerMovement)
     {
-        DoOnPlayerStop();
+        DoOnPlayerStop(playerMovement);
     }
 
-    public virtual void DoOnPlayerStop()
+    public virtual void DoOnPlayerStop(PlayerMovement playerMovement)
     {
         OnAllScriptsDone.Invoke();
     }

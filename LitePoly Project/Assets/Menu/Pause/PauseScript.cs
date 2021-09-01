@@ -34,7 +34,7 @@ public class PauseScript : MonoBehaviour
 
     [SerializeField] private PauseCanvas _pauseCanvas;
 
-    [SerializeField] private Canvas _inGamecanvas;
+    [SerializeField] private GameObject _inGamecanvas;
 
     private void Update()
     {

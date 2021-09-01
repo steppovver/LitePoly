@@ -70,4 +70,12 @@ public class MoneyGUIUpdater : MonoBehaviour
     {
         dict[playerMoney].textMesh.text = playerMoney.Money.ToString();
     }
+
+    private void OnEnable()
+    {
+        foreach (var item in dict.Keys)
+        {
+            dict[item].textMesh.text = item.Money.ToString();
+        }
+    }
 }

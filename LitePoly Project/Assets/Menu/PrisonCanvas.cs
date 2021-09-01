@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GamePlayCanvas : MonoBehaviour
+
+public class PrisonCanvas : MonoBehaviour
 {
     [SerializeField] private GameObject prisonCanvas;
     [SerializeField] private TextMeshProUGUI textOfAttempts;
@@ -12,6 +11,5 @@ public class GamePlayCanvas : MonoBehaviour
         prisonCanvas.gameObject.SetActive(true);
         print(player.numberOfTryToEscape);
         textOfAttempts.text = player.numberOfTryToEscape.ToString();
-
     }
 }
