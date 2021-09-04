@@ -120,7 +120,7 @@ public class DiceRoller : MonoBehaviour
         }
 
         bool IsDouble = false;
-        int sumOfDice = CalcualteSumOfDices(out IsDouble);
+        int sumOfDice = CalcualteSumOfDices(playerObj, out IsDouble);
 
         if (sumOfDice == -1)
         {
@@ -128,11 +128,10 @@ public class DiceRoller : MonoBehaviour
         }
         else if (!playerObj.isInPrison)
         {
-            if (playerObj.numberOfDouble < 2)
+            if (playerObj.numberOfDouble < 3)
             {
                 if (IsDouble)
                 {
-                    playerObj.numberOfDouble++;
                     print("Double dice");
                     OnThrowDiceOneMoreTime.Invoke();
                 }
@@ -170,7 +169,7 @@ public class DiceRoller : MonoBehaviour
         return true;
     }
 
-    int CalcualteSumOfDices(out bool doubl)
+    int CalcualteSumOfDices(Player player, out bool doubl)
     {
         doubl = false;
         int countDices = 0;
@@ -183,6 +182,7 @@ public class DiceRoller : MonoBehaviour
             }
             if (_dices.Count == 2 && currentDiceNumber == countDices)
             {
+                player.numberOfDouble++;
                 doubl = true;
             }
             countDices += currentDiceNumber;

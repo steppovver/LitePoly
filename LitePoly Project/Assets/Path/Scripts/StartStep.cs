@@ -8,6 +8,6 @@ public class StartStep : Step
     {
         base.WhenPlayerGoingThrow(playerMovement);
         print("start");
-        playerMovement.GetComponent<PlayerMoney>().AddPlayerMoney(200000);
+        playerMovement.player.playerMoney.AddPlayerMoney(200000);
     }
 }

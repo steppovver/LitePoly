@@ -113,3 +113,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   myIndex: 0
+  housePrefabs:
+  - {fileID: 1341866029984839941, guid: 0c52cf71604c98e43a7bd1fa87d63386, type: 3}
+  - {fileID: 6709673811826091465, guid: fbff5304e9650d745b177459610f0090, type: 3}
+  - {fileID: 4124662581584496469, guid: 11432ee3bd342394ca8e85c7eb1a9050, type: 3}
+  - {fileID: 4894093170838001096, guid: 4760884726b537b4eabab9a451ac3679, type: 3}
+  currentLevel: 0
+  _cost: 0

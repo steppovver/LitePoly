@@ -158,7 +158,7 @@ public class CameraOrbit : MonoBehaviour
         if (Input.GetMouseButton(2))
         {
             _velocityX += _horizontalRotateSens * Input.GetAxis("Mouse X") * _distance * 0.02f;
-            _velocityY += _verticalRotateSens * Input.GetAxis("Mouse Y") * 0.02f;
+            _velocityY += _verticalRotateSens * Input.GetAxis("Mouse Y") * _distance * 0.02f;
         }
 
         CalculateRotation();

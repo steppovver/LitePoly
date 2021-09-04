@@ -12,7 +12,7 @@ public class TownBuyCanvas : MonoBehaviour
 
     private TownStep _tempTownStep;
 
-    public void ShowTownCanvas(Player player, int cost, TownStep townStep)
+    public void ShowTownCanvas(Player player, TownStep townStep)
     {
         _tempTownStep = townStep;
 
@@ -21,7 +21,7 @@ public class TownBuyCanvas : MonoBehaviour
         temp.a = 0.5f;
         _townBuyCanvas.color = temp;
         _townBuyCanvas.gameObject.SetActive(true);
-        textOfCost.text = cost.ToString();
+        textOfCost.text = townStep.Cost.ToString();
     }
 
     public void BuyATown()
