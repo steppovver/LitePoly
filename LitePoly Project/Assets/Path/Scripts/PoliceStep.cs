@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PoliceStep : Step
 {
-    public override void DoOnPlayerStop(PlayerMovement playerMovement)
+    public override void DoOnPlayerStop(Player player)
     {
         StartCoroutine(playerMovementList[playerMovementList.Count - 1].MoveToPrison());
     }

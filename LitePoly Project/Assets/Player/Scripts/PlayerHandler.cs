@@ -5,7 +5,19 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
+    [SerializeField] private int _amountOfDice;
+    [SerializeField] private int _numberOfPlayers;
 
+    [SerializeField] private List<GameObject> _playersPrefabs;
+
+    private int _numberOfMoves = 0;
+    private int _indexOfActivePlayer = 0;
+    private bool _isOneMoreAttempt = false;
+    private DiceRoller _diceRoller;
+
+    public Player[] players;
+
+    [HideInInspector] public Player _activePlayer;
 
     // SINGLETON
     private static PlayerHandler _instance;
@@ -29,36 +41,21 @@ public class PlayerHandler : MonoBehaviour
 /// 
 /// </summary>
 
-
-    [SerializeField] private int _amountOfDice;
-    [SerializeField] private int _numberOfPlayers;
-
-    [SerializeField] private List<GameObject> _playersPrefabs;
-
-    private int _numberOfMoves = 0;
-    private int _indexOfActivePlayer = 0;
-    private bool _isOneMoreAttempt = false;
-    private DiceRoller _diceRoller;
-
-    public PlayerMovement[] players;
-
-    [HideInInspector] public PlayerMovement _activePlayer;
-
     void PlayersInit()
     {
+        players = new Player[_numberOfPlayers];
         for (int i = 0; i < _numberOfPlayers; i++)
         {
-            Instantiate(_playersPrefabs[i], transform);
+            Player player = Instantiate(_playersPrefabs[i], transform).GetComponent<Player>();
+            players[i] = player;
         }
     }
 
     void Start()
     {
-        players = GetComponentsInChildren<PlayerMovement>();
-
         for (int i = 0; i < players.Length; i++)
         {
-            PlayerMovement temp = players[i];
+            Player temp = players[i];
             int randomIndex = Random.Range(i, players.Length);
             players[i] = players[randomIndex];
             players[randomIndex] = temp;
@@ -101,10 +98,10 @@ public class PlayerHandler : MonoBehaviour
         _isOneMoreAttempt = false;
         _activePlayer = players[_indexOfActivePlayer];
 
-        if (_activePlayer.isInPrison && _activePlayer.numberOfTryToEscape > 0)
+        if (_activePlayer.isInPrison && _activePlayer.playerMovement.numberOfTryToEscape > 0)
         {
 
-             GamePlayCanvas.Instance.PrisonCanvas.ShowPrisonCanvas(_activePlayer);
+             GamePlayCanvas.Instance.PrisonCanvas.ShowPrisonCanvas(_activePlayer.playerMovement);
         }
         else
         {

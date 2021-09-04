@@ -36,7 +36,7 @@ public class PrisonDiceButton : MonoBehaviour
     public void TaskOnClick()
     {
         _prisonCanvas.gameObject.SetActive(false);
-        PlayerHandler.Instance._activePlayer.numberOfTryToEscape--;
+        PlayerHandler.Instance._activePlayer.playerMovement.numberOfTryToEscape--;
         PlayerHandler.Instance.NewPLayerTurn();
     }
 }

@@ -12,7 +12,7 @@ public class TownBuyCanvas : MonoBehaviour
 
     private TownStep _tempTownStep;
 
-    public void ShowTownCanvas(PlayerMovement player, int cost, TownStep townStep)
+    public void ShowTownCanvas(Player player, int cost, TownStep townStep)
     {
         _tempTownStep = townStep;
 

@@ -35,12 +35,12 @@ public class Step : MonoBehaviour
         StartCoroutine(playerMovementList[0].MoveOverForAnotherPlayer(whichWayToTurn));
     }
 
-    public void IfPlayerStopped(PlayerMovement playerMovement)
+    public void IfPlayerStopped(Player player)
     {
-        DoOnPlayerStop(playerMovement);
+        DoOnPlayerStop(player);
     }
 
-    public virtual void DoOnPlayerStop(PlayerMovement playerMovement)
+    public virtual void DoOnPlayerStop(Player player)
     {
         OnAllScriptsDone.Invoke();
     }
@@ -49,9 +49,8 @@ public class Step : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && Application.platform == RuntimePlatform.WindowsEditor)
         {
-            var step = GetComponent<Step>();
-            var activePlayer = PlayerHandler.Instance._activePlayer;
-            activePlayer.StartMoving(-1, step.myIndex);
+            Player activePlayer = PlayerHandler.Instance._activePlayer;
+            activePlayer.playerMovement.StartMoving(-1, myIndex);
         }
     }
 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6102920214696088780}
   - component: {fileID: 6102920214696088783}
   - component: {fileID: 7133669557078904859}
+  - component: {fileID: 8992445703268668081}
   m_Layer: 0
   m_Name: Player 4
   m_TagString: Untagged
@@ -104,6 +105,8 @@ MonoBehaviour:
   _playerOffset2: {x: -0.2, y: 0, z: -0.2}
   isAlone: 0
   isMoving: 0
+  numberOfTryToEscape: 3
+  player: {fileID: 0}
 --- !u!114 &7133669557078904859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,3 +119,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5cfd7cd7546f64dae89c85cbf19e53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _money: 1000000
+--- !u!114 &8992445703268668081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6102920214696088754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65caaa52faf6afd4fb7fb4f5e8f9629a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
+  playerMoney: {fileID: 0}
+  numberOfDouble: 0
+  isInPrison: 0

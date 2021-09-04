@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using System;
 
 [System.Serializable]
-public class Event : UnityEvent<PlayerMovement> { }
+public class Event : UnityEvent<Player> { }
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -21,13 +21,16 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isAlone = false;
     public bool isMoving = false;
-    public bool isInPrison = false;
 
-    public int numberOfDouble = 0;
     public int numberOfTryToEscape = 3;
+
+    public Player player;
+
 
     private void Start()
     {
+        player = GetComponent<Player>();
+
         if (OnCurrentPlayerStop == null)
             OnCurrentPlayerStop = new Event();
 
@@ -60,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
         // when player stoped
         isMoving = false;
-        OnCurrentPlayerStop.Invoke(this);
+        OnCurrentPlayerStop.Invoke(player);
     }
 
     private IEnumerator MoveToNextStep(Vector3 target)
@@ -144,8 +147,8 @@ public class PlayerMovement : MonoBehaviour
         }
         transform.position = target;
 
+        prison.IfPlayerStopped(player);
         numberOfTryToEscape = 3;
-        prison.IfPlayerStopped(this);
-        isInPrison = true;
+        player.isInPrison = true;
     }
 }

@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class TownStep : Step
 {
-    PlayerMovement townOwner;
+    Player townOwner;
     [SerializeField] int cost;
     [SerializeField] int nalog;
 
     Color _defaultColor;
 
-    public PlayerMovement _tempPlayer { get; private set; }
+    public Player _tempPlayer { get; private set; }
 
     public override void OnStart()
     {
@@ -19,16 +19,16 @@ public class TownStep : Step
         _defaultColor = GetComponent<Renderer>().material.color;
     }
 
-    public override void DoOnPlayerStop(PlayerMovement playerMovement)
+    public override void DoOnPlayerStop(Player player)
     {
-        _tempPlayer = playerMovement;
+        _tempPlayer = player;
         PlayerMoney playerMoney = _tempPlayer.GetComponent<PlayerMoney>();
 
         if (townOwner is null)
         {
             if (playerMoney.Money > cost)
             {
-                GamePlayCanvas.Instance.TownBuyCanvas.ShowTownCanvas(playerMovement, cost, this);
+                GamePlayCanvas.Instance.TownBuyCanvas.ShowTownCanvas(player, cost, this);
             }
             else
             {

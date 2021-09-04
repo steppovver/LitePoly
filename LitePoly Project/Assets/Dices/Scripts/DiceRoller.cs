@@ -36,7 +36,7 @@ public class DiceRoller : MonoBehaviour
             OnThrowDiceOneMoreTime = new UnityEvent();
     }
 
-    public void SetUpDicesAndRoll(int numberOfDices, PlayerMovement playerObj)
+    public void SetUpDicesAndRoll(int numberOfDices, Player playerObj)
     {
         StopAllCoroutines();
 
@@ -98,7 +98,7 @@ public class DiceRoller : MonoBehaviour
         }
     }
 
-    IEnumerator getDicesCount(PlayerMovement playerObj)
+    IEnumerator getDicesCount(Player playerObj)
     {
         yield return new WaitForSeconds(1.0f);
 
@@ -120,7 +120,7 @@ public class DiceRoller : MonoBehaviour
         }
 
         bool IsDouble = false;
-        int sumOfDice = CalcualteSumOfDices(playerObj, out IsDouble);
+        int sumOfDice = CalcualteSumOfDices(out IsDouble);
 
         if (sumOfDice == -1)
         {
@@ -128,19 +128,20 @@ public class DiceRoller : MonoBehaviour
         }
         else if (!playerObj.isInPrison)
         {
-            if (playerObj.numberOfDouble < 3)
+            if (playerObj.numberOfDouble < 2)
             {
                 if (IsDouble)
                 {
+                    playerObj.numberOfDouble++;
                     print("Double dice");
                     OnThrowDiceOneMoreTime.Invoke();
                 }
-                playerObj.StartMoving(sumOfDice);
+                playerObj.playerMovement.StartMoving(sumOfDice);
             }
             else
             {
                 print("Go to prison cheater!!!");
-                StartCoroutine(playerObj.MoveToPrison());
+                StartCoroutine(playerObj.playerMovement.MoveToPrison());
             }
         }
         else // if player in prison
@@ -149,7 +150,7 @@ public class DiceRoller : MonoBehaviour
             {
                 print("Double dice");
                 OnThrowDiceOneMoreTime.Invoke();
-                playerObj.StartMoving(sumOfDice);
+                playerObj.playerMovement.StartMoving(sumOfDice);
                 playerObj.isInPrison = false;
             }
             else
@@ -169,7 +170,7 @@ public class DiceRoller : MonoBehaviour
         return true;
     }
 
-    int CalcualteSumOfDices(PlayerMovement playerObj, out bool doubl)
+    int CalcualteSumOfDices(out bool doubl)
     {
         doubl = false;
         int countDices = 0;
@@ -183,7 +184,6 @@ public class DiceRoller : MonoBehaviour
             if (_dices.Count == 2 && currentDiceNumber == countDices)
             {
                 doubl = true;
-                playerObj.numberOfDouble++;
             }
             countDices += currentDiceNumber;
         }
