@@ -11,10 +11,12 @@ public class TownBuyCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textOfCost;
 
     private TownStep _tempTownStep;
+    private Player _tempPlayer;
 
     public void ShowTownCanvas(Player player, TownStep townStep)
     {
         _tempTownStep = townStep;
+        _tempPlayer = player;
 
         // canvas options
         Color temp = _townBuyCanvas.color = player.GetComponent<Renderer>().material.color;
@@ -28,7 +30,8 @@ public class TownBuyCanvas : MonoBehaviour
     {
         _townBuyCanvas.gameObject.SetActive(false);
         _tempTownStep.SetNewOwner();
-        _tempTownStep.OnAllScriptsDone.Invoke();
+
+        GetComponent<TownUpgradeCanvas>().ShowUpgradeTownCanvas(_tempPlayer, _tempTownStep);
 
     }
 

@@ -8,6 +8,7 @@ public class StartStep : Step
     {
         base.WhenPlayerGoingThrow(playerMovement);
         print("start");
+        playerMovement.player.numberOfLap++;
         playerMovement.player.playerMoney.AddPlayerMoney(200000);
     }
 }

@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public PlayerMoney playerMoney;
 
     public int numberOfDouble = 0;
+    public int numberOfLap = 0;
     public bool isInPrison = false;
 
     public List<TownStep> myOwnTownSteps = new List<TownStep>();
