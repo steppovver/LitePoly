@@ -147,8 +147,8 @@ public class PlayerMovement : MonoBehaviour
         }
         transform.position = target;
 
-        prison.IfPlayerStopped(player);
         numberOfTryToEscape = 3;
         player.isInPrison = true;
+        prison.IfPlayerStopped(player);
     }
 }
