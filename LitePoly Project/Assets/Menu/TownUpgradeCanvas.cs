@@ -33,6 +33,12 @@ public class TownUpgradeCanvas : MonoBehaviour
             _costsOfUpgrade[i] = _tempTownStep.CostsOfUpgrade[i];
         }
 
+        if (player.playerMoney.Money < Mathf.Clamp(_costsOfUpgrade[townStep.currentLevel], 0, 3)) // if not enough money to buy smth then skip upgrade
+        {
+            _tempTownStep.OnAllScriptsDone.Invoke();
+            return;
+        }
+
         // canvas options
         if (townStep.currentLevel < 3)
         {
@@ -59,15 +65,22 @@ public class TownUpgradeCanvas : MonoBehaviour
         }
         else
         {
-            textsOfCosts[3].text = String.Format("{0:n0}", _costsOfUpgrade[3]);
-            if (player.playerMoney.Money >= _costsOfUpgrade[3])
+            if (townStep.currentLevel == 4)
             {
-                _townUpgrateHotelCanvas.color = color;
-                _townUpgrateHotelCanvas.gameObject.SetActive(true);
+                _tempTownStep.OnAllScriptsDone.Invoke();
             }
             else
             {
-                _tempTownStep.OnAllScriptsDone.Invoke();
+                textsOfCosts[3].text = String.Format("{0:n0}", _costsOfUpgrade[3]);
+                if (player.playerMoney.Money >= _costsOfUpgrade[3])
+                {
+                    _townUpgrateHotelCanvas.color = color;
+                    _townUpgrateHotelCanvas.gameObject.SetActive(true);
+                }
+                else
+                {
+                    _tempTownStep.OnAllScriptsDone.Invoke();
+                }
             }
         }
         
@@ -76,6 +89,7 @@ public class TownUpgradeCanvas : MonoBehaviour
     public void CanceUpgrade()
     {
         _townUpgradeCanvas.gameObject.SetActive(false);
+        _townUpgrateHotelCanvas.gameObject.SetActive(false);
         _tempTownStep.OnAllScriptsDone.Invoke();
     }
 

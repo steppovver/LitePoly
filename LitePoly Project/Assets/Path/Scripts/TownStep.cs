@@ -66,8 +66,6 @@ public class TownStep : Step
             }
             else
             {
-                // TODO Проверка на возможность покупки
-
                 GamePlayCanvas.Instance.TownUpgradeCanvas.ShowUpgradeTownCanvas(player, this);
             }
         }
