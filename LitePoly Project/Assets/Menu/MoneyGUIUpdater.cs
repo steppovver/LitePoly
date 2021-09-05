@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,7 +61,7 @@ public class MoneyGUIUpdater : MonoBehaviour
         image.color = temp;
 
         image.gameObject.SetActive(true);
-        textMeshProUGUI.text = playerMoney.Money.ToString();
+        textMeshProUGUI.text = String.Format("{0:n0}", playerMoney.Money);
 
         imageStoragesInUse.Add(newimageStorage);
         index++;        
@@ -68,14 +69,14 @@ public class MoneyGUIUpdater : MonoBehaviour
 
     public void MoneyGUIUpdate(PlayerMoney playerMoney)
     {
-        dict[playerMoney].textMesh.text = playerMoney.Money.ToString();
+        dict[playerMoney].textMesh.text = String.Format("{0:n0}", playerMoney.Money);
     }
 
     private void OnEnable()
     {
         foreach (var item in dict.Keys)
         {
-            dict[item].textMesh.text = item.Money.ToString();
+            dict[item].textMesh.text = String.Format("{0:n0}", item.Money);
         }
     }
 }

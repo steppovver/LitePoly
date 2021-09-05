@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,7 +38,7 @@ public class TownUpgradeCanvas : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                textsOfCosts[i].text = _costsOfUpgrade[i].ToString();
+                textsOfCosts[i].text = String.Format("{0:n0}", _costsOfUpgrade[i]);
                 if (player.playerMoney.Money >= _costsOfUpgrade[i] && townStep.currentLevel < i + 1)
                 {
                     buttons[i].interactable = true;
@@ -58,7 +59,7 @@ public class TownUpgradeCanvas : MonoBehaviour
         }
         else
         {
-            textsOfCosts[3].text = _costsOfUpgrade[3].ToString();
+            textsOfCosts[3].text = String.Format("{0:n0}", _costsOfUpgrade[3]);
             if (player.playerMoney.Money >= _costsOfUpgrade[3])
             {
                 _townUpgrateHotelCanvas.color = color;

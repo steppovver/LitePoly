@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class TownBuyCanvas : MonoBehaviour
         temp.a = 0.5f;
         _townBuyCanvas.color = temp;
         _townBuyCanvas.gameObject.SetActive(true);
-        textOfCost.text = townStep.Cost.ToString();
+        textOfCost.text = String.Format("{0:n0}", townStep.Cost);
     }
 
     public void BuyATown()
