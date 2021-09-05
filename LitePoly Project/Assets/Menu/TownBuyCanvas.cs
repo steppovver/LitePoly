@@ -29,7 +29,7 @@ public class TownBuyCanvas : MonoBehaviour
     public void BuyATown()
     {
         _townBuyCanvas.gameObject.SetActive(false);
-        _tempTownStep.SetNewOwner();
+        _tempTownStep.BuyStep();
 
         GetComponent<TownUpgradeCanvas>().ShowUpgradeTownCanvas(_tempPlayer, _tempTownStep);
 

@@ -1,3 +1,5 @@
+using System.Linq;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -89,19 +91,29 @@ public class PlayerHandler : MonoBehaviour
 
     public void PassTheMoveToNextPlayer()
     {
-        if (!_isOneMoreAttempt || _activePlayer.isInPrison) // тут можно подумать если чувак встал на полицию с парой, может ему сразу дать шанс выйти из тюрьмы или нет хз
+        if (_numberOfPlayers == players.Length)
         {
-            _activePlayer.numberOfDouble = 0;
-            print("pass the move");
-            _indexOfActivePlayer = (_indexOfActivePlayer + 1) % _numberOfPlayers;
+            if (!_isOneMoreAttempt || _activePlayer.isInPrison) // тут можно подумать если чувак встал на полицию с парой, может ему сразу дать шанс выйти из тюрьмы или нет хз
+            {
+                _activePlayer.numberOfDouble = 0;
+                print("pass the move");
+                _indexOfActivePlayer = (_indexOfActivePlayer + 1) % _numberOfPlayers;
+            }
+            _isOneMoreAttempt = false;
+            _activePlayer = players[_indexOfActivePlayer];
         }
-        _isOneMoreAttempt = false;
-        _activePlayer = players[_indexOfActivePlayer];
+        else
+        {
+            _numberOfPlayers = players.Length;
+            print("pass the move when smo lose");
+            _indexOfActivePlayer = _indexOfActivePlayer % _numberOfPlayers;
+            _activePlayer = players[_indexOfActivePlayer];
+        }
 
         if (_activePlayer.isInPrison && _activePlayer.playerMovement.numberOfTryToEscape > 0)
         {
 
-             GamePlayCanvas.Instance.PrisonCanvas.ShowPrisonCanvas(_activePlayer.playerMovement);
+            GamePlayCanvas.Instance.PrisonCanvas.ShowPrisonCanvas(_activePlayer.playerMovement);
         }
         else
         {
@@ -109,5 +121,14 @@ public class PlayerHandler : MonoBehaviour
             RollADiceButton.Instance.myButton.gameObject.SetActive(true);
             RollADiceButton.Instance.SetColor(_activePlayer.GetComponent<Renderer>().material.color);
         }
+
+    }
+
+    public void PlayerLose(Player player)
+    {
+        print("you lose SUCKER");
+        _isOneMoreAttempt = false;
+        players = players.Where(val => val != player).ToArray();
+        Destroy(player.gameObject, 1);
     }
 }

@@ -22,6 +22,7 @@ public class TownStep : Step
 
     [SerializeField] private int _cost;
     public int Cost { get { return _cost; } }
+    public int CostOfTown { get; private set; }
 
 
     public override void OnStart()
@@ -58,8 +59,8 @@ public class TownStep : Step
             if (_tempPlayer != townOwner)
             {
                 int nalog = countNalog();
-                playerMoney.AddPlayerMoney(-nalog);
-                townOwner.playerMoney.AddPlayerMoney(nalog);
+                int gavedMoney = playerMoney.AddPlayerMoney(-nalog);
+                townOwner.playerMoney.AddPlayerMoney(gavedMoney);
                 OnAllScriptsDone.Invoke();
 
             }
@@ -72,7 +73,26 @@ public class TownStep : Step
         }
     }
 
-    public void SetNewOwner()
+    public void SellStep()
+    {
+        if (townOwner != null)
+        {
+            currentLevel = 0;
+            nalogCoef = 0.1f;
+
+            townOwner.myOwnTownSteps.Remove(this);
+            GetComponent<Renderer>().material.color = _defaultColor;
+            if (_housePrefabInUse != null)
+            {
+                Destroy(_housePrefabInUse);
+            }
+
+            townOwner.playerMoney.AddPlayerMoney(CostOfTown);
+            townOwner = null;
+        }
+    }
+
+    public void BuyStep()
     {
         if (_tempPlayer != null)
         {
@@ -82,6 +102,7 @@ public class TownStep : Step
             nalogCoef = 0.1f;
 
             townOwner.playerMoney.AddPlayerMoney(-_cost);
+            CostOfTown = _cost;
             GetComponent<Renderer>().material.color = Color.Lerp(_defaultColor, townOwner.GetComponent<Renderer>().material.color, 0.5f);
         }
         _tempPlayer = null;
@@ -111,6 +132,8 @@ public class TownStep : Step
                 break;
         }
         InstantiateHouse(level, Color.Lerp(_defaultColor, townOwner.GetComponent<Renderer>().material.color, 0.5f));
+        townOwner.playerMoney.AddPlayerMoney(-_costsOfUpgrade[level - 1]);
+        CostOfTown = _cost + _costsOfUpgrade[level - 1];
     }
 
     private int countNalog()
@@ -122,7 +145,7 @@ public class TownStep : Step
 
     private void InstantiateHouse(int level, Color color)
     {
-        if (_housePrefabInUse is null)
+        if (_housePrefabInUse != null)
         {
             Destroy(_housePrefabInUse);
         }
