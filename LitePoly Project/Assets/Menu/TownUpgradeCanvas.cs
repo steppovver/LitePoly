@@ -32,8 +32,7 @@ public class TownUpgradeCanvas : MonoBehaviour
         {
             _costsOfUpgrade[i] = _tempTownStep.CostsOfUpgrade[i];
         }
-
-        if (player.playerMoney.Money < Mathf.Clamp(_costsOfUpgrade[townStep.currentLevel], 0, 3)) // if not enough money to buy smth then skip upgrade
+        if (player.playerMoney.Money < Mathf.Clamp(_costsOfUpgrade[townStep.currentLevel+1], 0, 3)) // if not enough money to buy smth then skip upgrade
         {
             _tempTownStep.OnAllScriptsDone.Invoke();
             return;
