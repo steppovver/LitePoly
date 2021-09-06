@@ -1,32 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TownStep : Step
 {
     [SerializeField] GameObject[] housePrefabs;
     [SerializeField] public Player _tempPlayer { get; private set; }
-
-    int[] _costsOfUpgrade = new int[4];
-
-    public int[] CostsOfUpgrade { get { return (int[])_costsOfUpgrade.Clone(); } }
+    [SerializeField] private int _cost;
 
     GameObject _housePrefabInUse;
     Player townOwner;
     Color _defaultColor;
-
     float nalogCoef;
+    TextMeshProUGUI costText;
 
     public int currentLevel;
 
-    [SerializeField] private int _cost;
     public int Cost { get { return _cost; } }
     public int CostOfTown { get; private set; }
+
+    int[] _costsOfUpgrade = new int[4];
+    public int[] CostsOfUpgrade { get { return (int[])_costsOfUpgrade.Clone(); } }
 
 
     public override void OnStart()
     {
+        costText = GetComponentInChildren<TextMeshProUGUI>();
         base.OnStart();
         _defaultColor = GetComponent<Renderer>().material.color;
 
@@ -34,6 +36,8 @@ public class TownStep : Step
         _costsOfUpgrade[1] = (int)Mathf.Round(_cost * 0.5f);
         _costsOfUpgrade[2] = (int)Mathf.Round(_cost * 0.75f);
         _costsOfUpgrade[3] = _cost;
+
+        costText.text = String.Format("{0:n0}", _cost);
     }
 
     public override void DoOnPlayerStop(Player player)
@@ -98,6 +102,7 @@ public class TownStep : Step
             townOwner.myOwnTownSteps.Add(this);
             currentLevel = 0;
             nalogCoef = 0.1f;
+            costText.text = String.Format("{0:n0}", _cost * nalogCoef);
 
             townOwner.playerMoney.AddPlayerMoney(-_cost);
             CostOfTown = _cost;
@@ -132,6 +137,8 @@ public class TownStep : Step
         InstantiateHouse(level, Color.Lerp(_defaultColor, townOwner.GetComponent<Renderer>().material.color, 0.5f));
         townOwner.playerMoney.AddPlayerMoney(-_costsOfUpgrade[level - 1]);
         CostOfTown = _cost + _costsOfUpgrade[level - 1];
+        costText.text = String.Format("{0:n0}", _cost * nalogCoef);
+
     }
 
     private int countNalog()
