@@ -13,11 +13,11 @@ public class PrisonCanvas : MonoBehaviour
         prisonCanvas.gameObject.SetActive(true);
         if (player.player.playerMoney.Money < 200000)
         {
-            payButton.gameObject.SetActive(true);
+            payButton.gameObject.SetActive(false);
         }
         else
         {
-            payButton.gameObject.SetActive(false);
+            payButton.gameObject.SetActive(true);
 
         }
 

@@ -3481,7 +3481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prisonCanvas: {fileID: 649822727}
   textOfAttempts: {fileID: 4453339}
-  payButton: {fileID: 0}
+  payButton: {fileID: 628943436}
 --- !u!114 &332055256
 MonoBehaviour:
   m_ObjectHideFlags: 0
