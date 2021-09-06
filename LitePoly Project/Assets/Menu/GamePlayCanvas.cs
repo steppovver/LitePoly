@@ -15,6 +15,7 @@ public class GamePlayCanvas : MonoBehaviour
     [HideInInspector] public PrisonCanvas PrisonCanvas;
     [HideInInspector] public TownBuyCanvas TownBuyCanvas;
     [HideInInspector] public TownUpgradeCanvas TownUpgradeCanvas;
+    [HideInInspector] public GameOver GameOver;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class GamePlayCanvas : MonoBehaviour
         PrisonCanvas = GetComponent<PrisonCanvas>();
         TownBuyCanvas = GetComponent<TownBuyCanvas>();
         TownUpgradeCanvas = GetComponent<TownUpgradeCanvas>();
+        GameOver = GetComponent<GameOver>();
     }
     /// <summary>
     /// 

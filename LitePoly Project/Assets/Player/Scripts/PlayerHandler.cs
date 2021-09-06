@@ -104,6 +104,11 @@ public class PlayerHandler : MonoBehaviour
         }
         else
         {
+            if (players.Length == 1)
+            {
+                GamePlayCanvas.Instance.GameOver.SetGameOverScreen(players[0].GetComponent<Renderer>().material.color);
+            }
+
             _numberOfPlayers = players.Length;
             print("pass the move when smo lose");
             _indexOfActivePlayer = _indexOfActivePlayer % _numberOfPlayers;
