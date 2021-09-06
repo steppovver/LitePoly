@@ -10,6 +10,7 @@ public class Step : MonoBehaviour
     public UnityEvent OnAllScriptsDone;
 
     public int myIndex; // for Debug public
+    bool rightClick = false;
 
 
 
@@ -45,13 +46,25 @@ public class Step : MonoBehaviour
         OnAllScriptsDone.Invoke();
     }
 
-    private void OnMouseOver() // Debug Method
+    private void OnMouseOver() //DEBUG
     {
         if (Input.GetMouseButtonDown(1) && Application.platform == RuntimePlatform.WindowsEditor)
         {
-            Player activePlayer = PlayerHandler.Instance._activePlayer;
-            activePlayer.playerMovement.StartMoving(-1, myIndex);
+            rightClick = true;
         }
+        if (rightClick)
+        {
+            if (Input.GetMouseButtonUp(1) && Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                Player activePlayer = PlayerHandler.Instance._activePlayer;
+                activePlayer.playerMovement.StartMoving(-1, myIndex);
+            }
+        }
+    }
+
+    private void OnMouseExit() //DEBUG
+    {
+        rightClick = false;
     }
 
     public virtual void WhenPlayerGoingThrow(PlayerMovement playerMovement)

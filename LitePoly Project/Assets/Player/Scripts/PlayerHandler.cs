@@ -45,6 +45,11 @@ public class PlayerHandler : MonoBehaviour
 
     void PlayersInit()
     {
+        if (BetweenSceneScript.Instance != null)
+        {
+            _numberOfPlayers = BetweenSceneScript.Instance.amountOfPlayers;
+        }
+
         players = new Player[_numberOfPlayers];
         for (int i = 0; i < _numberOfPlayers; i++)
         {
