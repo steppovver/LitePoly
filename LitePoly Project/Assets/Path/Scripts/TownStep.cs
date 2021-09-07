@@ -22,7 +22,7 @@ public class TownStep : Step
     public int Cost { get { return _cost; } }
     public int CostOfTown { get; private set; }
 
-    int[] _costsOfUpgrade = new int[4];
+    int[] _costsOfUpgrade = new int[5];
     public int[] CostsOfUpgrade { get { return (int[])_costsOfUpgrade.Clone(); } }
 
 
@@ -32,10 +32,11 @@ public class TownStep : Step
         base.OnStart();
         _defaultColor = GetComponent<Renderer>().material.color;
 
-        _costsOfUpgrade[0] = (int)Mathf.Round(_cost * 0.25f);
-        _costsOfUpgrade[1] = (int)Mathf.Round(_cost * 0.5f);
-        _costsOfUpgrade[2] = (int)Mathf.Round(_cost * 0.75f);
-        _costsOfUpgrade[3] = _cost;
+        _costsOfUpgrade[0] = _cost;
+        _costsOfUpgrade[1] = (int)Mathf.Round(_cost * 0.25f);
+        _costsOfUpgrade[2] = (int)Mathf.Round(_cost * 0.5f);
+        _costsOfUpgrade[3] = (int)Mathf.Round(_cost * 0.75f);
+        _costsOfUpgrade[4] = (int)Mathf.Round(_cost * 1.75f);
 
         costText.text = String.Format("{0:n0}", _cost);
     }
@@ -54,7 +55,6 @@ public class TownStep : Step
             else
             {
                 OnAllScriptsDone.Invoke();
-
             }
         }
         else
@@ -66,7 +66,6 @@ public class TownStep : Step
                 int gavedMoney = playerMoney.AddPlayerMoney(-nalog);
                 townOwner.playerMoney.AddPlayerMoney(gavedMoney);
                 OnAllScriptsDone.Invoke();
-
             }
             else
             {
@@ -113,22 +112,20 @@ public class TownStep : Step
 
     public void UpgradeTown(int level, Color color)
     {
+        currentLevel = level;
+
         switch (level)
         {
             case 1:
-                currentLevel = 1;
                 nalogCoef = 0.5f;
                 break;
             case 2:
-                currentLevel = 2;
                 nalogCoef = 1f;
                 break;
             case 3:
-                currentLevel = 3;
                 nalogCoef = 1.5f;
                 break;
             case 4:
-                currentLevel = 4;
                 nalogCoef = 2f;
                 break;
             default:
@@ -136,7 +133,11 @@ public class TownStep : Step
         }
         InstantiateHouse(level, Color.Lerp(_defaultColor, townOwner.GetComponent<Renderer>().material.color, 0.5f));
         townOwner.playerMoney.AddPlayerMoney(-_costsOfUpgrade[level - 1]);
-        CostOfTown = _cost + _costsOfUpgrade[level - 1];
+        CostOfTown = 0;
+        for (int i = 0; i <= level; i++)
+        {
+            CostOfTown += _costsOfUpgrade[i];
+        }
         costText.text = String.Format("{0:n0}", _cost * nalogCoef);
 
     }

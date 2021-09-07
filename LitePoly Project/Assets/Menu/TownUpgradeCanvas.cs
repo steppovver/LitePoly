@@ -14,7 +14,7 @@ public class TownUpgradeCanvas : MonoBehaviour
 
     [SerializeField] private Button[] buttons;
 
-    int[] _costsOfUpgrade = new int[4];
+    int[] _costsOfUpgrade;
 
     Color color;
 
@@ -23,16 +23,17 @@ public class TownUpgradeCanvas : MonoBehaviour
 
     public void ShowUpgradeTownCanvas(Player player, TownStep townStep)
     {
+        _costsOfUpgrade = new int[5];
         _tempPlayer = player;
         _tempTownStep = townStep;
         color = player.GetComponent<Renderer>().material.color;
         color.a = 0.5f;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = townStep.currentLevel + 1; i < _costsOfUpgrade.Length; i++)
         {
-            _costsOfUpgrade[i] = _tempTownStep.CostsOfUpgrade[i];
+            _costsOfUpgrade[i] = _tempTownStep.CostsOfUpgrade[i] + _costsOfUpgrade[i - 1];
         }
-        if (player.playerMoney.Money < _costsOfUpgrade[Mathf.Clamp(townStep.currentLevel + 1, 0, 3)]) // if not enough money to buy smth then skip upgrade
+        if (player.playerMoney.Money < _costsOfUpgrade[Mathf.Clamp(townStep.currentLevel + 1, 0, 4)]) // if not enough money to buy smth then skip upgrade
         {
             _tempTownStep.OnAllScriptsDone.Invoke();
             return;
@@ -41,21 +42,21 @@ public class TownUpgradeCanvas : MonoBehaviour
         // canvas options
         if (townStep.currentLevel < 3)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 1; i < 4; i++)
             {
-                textsOfCosts[i].text = String.Format("{0:n0}", _costsOfUpgrade[i]);
-                if (player.playerMoney.Money >= _costsOfUpgrade[i] && townStep.currentLevel < i + 1)
+                textsOfCosts[i-1].text = String.Format("{0:n0}", _costsOfUpgrade[i]);
+                if (player.playerMoney.Money >= _costsOfUpgrade[i] && townStep.currentLevel < i)
                 {
-                    buttons[i].interactable = true;
+                    buttons[i-1].interactable = true;
                 }
                 else
                 {
-                    buttons[i].interactable = false;
+                    buttons[i-1].interactable = false;
                 }
 
-                if (i == 2 && player.numberOfLap < 1)
+                if (i == 3 && player.numberOfLap < 1)
                 {
-                    buttons[i].interactable = false;
+                    buttons[i-1].interactable = false;
                 }
             }
 
@@ -70,8 +71,8 @@ public class TownUpgradeCanvas : MonoBehaviour
             }
             else
             {
-                textsOfCosts[3].text = String.Format("{0:n0}", _costsOfUpgrade[3]);
-                if (player.playerMoney.Money >= _costsOfUpgrade[3])
+                textsOfCosts[3].text = String.Format("{0:n0}", _costsOfUpgrade[4]);
+                if (player.playerMoney.Money >= _costsOfUpgrade[4])
                 {
                     _townUpgrateHotelCanvas.color = color;
                     _townUpgrateHotelCanvas.gameObject.SetActive(true);
