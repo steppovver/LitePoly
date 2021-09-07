@@ -65,7 +65,15 @@ public class TownStep : Step
                 int nalog = countNalog();
                 int gavedMoney = playerMoney.AddPlayerMoney(-nalog);
                 townOwner.playerMoney.AddPlayerMoney(gavedMoney);
-                OnAllScriptsDone.Invoke();
+
+                if (_tempPlayer.playerMoney.Money < CostOfTown)
+                {
+                    OnAllScriptsDone.Invoke();
+                }
+                else
+                {
+                    GamePlayCanvas.Instance.TownBuyCanvas.ShowResellCanvas(player, this);
+                }
             }
             else
             {
@@ -110,7 +118,29 @@ public class TownStep : Step
         _tempPlayer = null;
     }
 
-    public void UpgradeTown(int level, Color color)
+    public void ResellStep()
+    {
+        townOwner.myOwnTownSteps.Remove(this);
+        townOwner.playerMoney.AddPlayerMoney(CostOfTown);
+        townOwner = null;
+
+
+        if (_tempPlayer != null)
+        {
+            _tempPlayer.playerMoney.AddPlayerMoney(-CostOfTown);
+
+            townOwner = _tempPlayer;
+            townOwner.myOwnTownSteps.Add(this);
+            costText.text = String.Format("{0:n0}", _cost * nalogCoef);
+
+            GetComponent<Renderer>().material.color = Color.Lerp(_defaultColor, townOwner.GetComponent<Renderer>().material.color, 0.5f);
+        }
+
+        _housePrefabInUse.GetComponent<HouseScript>().ChangeColor(Color.Lerp(_defaultColor, townOwner.GetComponent<Renderer>().material.color, 0.5f));
+        GamePlayCanvas.Instance.TownUpgradeCanvas.ShowUpgradeTownCanvas(townOwner, this);
+    }
+
+    public void UpgradeTown(int level, Color color, int cost)
     {
         currentLevel = level;
 
@@ -132,7 +162,7 @@ public class TownStep : Step
                 break;
         }
         InstantiateHouse(level, Color.Lerp(_defaultColor, townOwner.GetComponent<Renderer>().material.color, 0.5f));
-        townOwner.playerMoney.AddPlayerMoney(-_costsOfUpgrade[level - 1]);
+        townOwner.playerMoney.AddPlayerMoney(-cost);
         CostOfTown = 0;
         for (int i = 0; i <= level; i++)
         {

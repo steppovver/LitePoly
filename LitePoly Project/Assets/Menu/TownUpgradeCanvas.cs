@@ -98,7 +98,7 @@ public class TownUpgradeCanvas : MonoBehaviour
         _townUpgradeCanvas.gameObject.SetActive(false);
         _townUpgrateHotelCanvas.gameObject.SetActive(false);
 
-        _tempTownStep.UpgradeTown(level, color);
+        _tempTownStep.UpgradeTown(level, color, _costsOfUpgrade[level]);
 
         _tempTownStep.OnAllScriptsDone.Invoke();
     }
